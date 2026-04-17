@@ -153,20 +153,26 @@ cbm_effect_apply_inflation_consequences = {
     set_temp_variable = { cbm_tmp_component = cbm_war_econ_stress }
     multiply_temp_variable = { cbm_tmp_component = 0.035 }
     add_to_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_variable = { cbm_dbg_infl_war = cbm_tmp_component }
 
     set_temp_variable = { cbm_tmp_component = cbm_fx_pressure }
     multiply_temp_variable = { cbm_tmp_component = 0.03 }
     add_to_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_variable = { cbm_dbg_infl_fx = cbm_tmp_component }
 
     set_temp_variable = { cbm_tmp_component = cbm_supply_shock_risk }
     multiply_temp_variable = { cbm_tmp_component = 0.025 }
     add_to_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_variable = { cbm_dbg_infl_supply = cbm_tmp_component }
 
     set_temp_variable = { cbm_tmp_component = cbm_policy_rate }
     multiply_temp_variable = { cbm_tmp_component = 0.18 }
     subtract_from_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_temp_variable = { cbm_dbg_infl_policy = cbm_tmp_component }
+    multiply_temp_variable = { cbm_dbg_infl_policy = -1 }
 
     add_to_variable = { cbm_inflation = cbm_tmp_infl_delta }
+    set_variable = { cbm_dbg_infl_net = cbm_tmp_infl_delta }
 
     if = {
         limit = { check_variable = { cbm_inflation > 20 } }
@@ -310,6 +316,28 @@ cbm_effect_apply_fiscal_composition = {
         add_to_variable = { cbm_industry_productivity = 0.35 }
         add_to_variable = { cbm_gdp = 0.20 }
     }
+
+    # Crowding-out and composition quality penalties.
+    if = {
+        limit = { check_variable = { cbm_military_spending_share > 35 } }
+        add_to_variable = { cbm_consumption_index = -1.2 }
+        add_to_variable = { cbm_financial_confidence = -0.8 }
+    }
+    if = {
+        limit = { check_variable = { cbm_social_spending_share > 40 } }
+        add_to_variable = { cbm_public_debt = 0.6 }
+    }
+    if = {
+        limit = { check_variable = { cbm_infrastructure_spending_share > 30 } }
+        add_to_variable = { cbm_gdp = 0.3 }
+    }
+
+    set_temp_variable = { cbm_tmp_spending_total = cbm_social_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_infrastructure_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_industry_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_military_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_research_spending_share }
+    set_variable = { cbm_dbg_spending_total = cbm_tmp_spending_total }
 }
 
 cbm_effect_update_war_stress_channel = {
@@ -418,6 +446,37 @@ cbm_effect_run_ai_policy_response = {
         add_to_variable = { cbm_fiscal_stance = 1 }
     }
 
+    # Reserve/debt-aware package reactions.
+    if = {
+        limit = {
+            is_ai = yes
+            check_variable = { cbm_fx_reserves < 20 }
+            check_variable = { cbm_fx_pressure > 65 }
+        }
+        add_to_variable = { cbm_policy_rate = 0.4 }
+        add_to_variable = { cbm_liquidity_stance = -1 }
+        add_to_variable = { cbm_fx_reserves = -1.2 }
+    }
+    if = {
+        limit = {
+            is_ai = yes
+            check_variable = { cbm_debt_to_gdp > 120 }
+            check_variable = { cbm_financial_confidence < 45 }
+        }
+        add_to_variable = { cbm_fiscal_stance = -1 }
+        add_to_variable = { cbm_public_debt = -0.6 }
+        add_to_variable = { cbm_financial_confidence = 0.3 }
+    }
+    if = {
+        limit = {
+            is_ai = yes
+            has_war = yes
+            check_variable = { cbm_war_econ_stress > 40 }
+        }
+        add_to_variable = { cbm_military_spending_share = 0.6 }
+        add_to_variable = { cbm_social_spending_share = -0.5 }
+    }
+
     clamp_variable = { var = cbm_policy_rate min = 0 max = 15 }
     clamp_variable = { var = cbm_liquidity_stance min = -2 max = 2 }
     clamp_variable = { var = cbm_fiscal_stance min = -2 max = 2 }
@@ -455,6 +514,13 @@ cbm_effect_quarterly_structural_update = {
         limit = { tag = ITA }
         set_global_variable = { g_cbm_rank_ita = cbm_gdp }
     }
+
+    # Real global rank for current country: count countries with higher GDP.
+    set_variable = { cbm_global_gdp_rank = 1 }
+    every_country = {
+        limit = { check_variable = { cbm_gdp > ROOT.cbm_gdp } }
+        ROOT = { add_to_variable = { cbm_global_gdp_rank = 1 } }
+    }
 }
 
 cbm_effect_sanitize_variables = {
@@ -484,4 +550,5 @@ cbm_effect_sanitize_variables = {
     clamp_variable = { var = cbm_military_spending_share min = 0 max = 60 }
     clamp_variable = { var = cbm_research_spending_share min = 0 max = 40 }
     clamp_variable = { var = cbm_cb_regime min = 1 max = 4 }
+    clamp_variable = { var = cbm_global_gdp_rank min = 1 max = 300 }
 }

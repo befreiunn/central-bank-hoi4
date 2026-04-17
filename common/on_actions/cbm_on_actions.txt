@@ -37,6 +37,13 @@ on_actions = {
                 set_variable = { cbm_military_spending_share = 20 }
                 set_variable = { cbm_research_spending_share = 10 }
                 set_variable = { cbm_cb_regime = 1 } # 1 independent, 2 political, 3 peg-like, 4 wartime finance
+                set_variable = { cbm_global_gdp_rank = 99 }
+                set_variable = { cbm_dbg_infl_war = 0 }
+                set_variable = { cbm_dbg_infl_fx = 0 }
+                set_variable = { cbm_dbg_infl_supply = 0 }
+                set_variable = { cbm_dbg_infl_policy = 0 }
+                set_variable = { cbm_dbg_infl_net = 0 }
+                set_variable = { cbm_dbg_spending_total = 100 }
 
                 # Country profile overrides (starting balance pass v1)
                 if = {

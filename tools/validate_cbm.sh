@@ -27,6 +27,8 @@ rg -q "cbm_central_bank_regimes" common/decisions/cbm_decisions.txt
 rg -q "cbm_fiscal_composition" common/decisions/cbm_decisions.txt
 rg -q "^l_english:" localisation/english/cbm_l_english.yml
 rg -q "g_cbm_rank_usa" common/scripted_effects/cbm_scripted_effects.txt
+rg -q "cbm_global_gdp_rank" common/scripted_effects/cbm_scripted_effects.txt
+rg -q "cbm_dbg_infl_net" common/scripted_effects/cbm_scripted_effects.txt
 
 # ensure all event IDs used in file have loc title keys
 while read -r event_id; do

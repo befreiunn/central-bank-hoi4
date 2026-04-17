@@ -83,5 +83,42 @@ ideas = {
                 political_power_gain = -0.03
             }
         }
+
+        cbm_debt_crisis_state = {
+            allowed = { always = yes }
+            picture = generic_strike
+            modifier = {
+                stability_factor = -0.06
+                political_power_gain = -0.06
+                factory_output = -0.03
+            }
+        }
+
+        cbm_inflation_spiral_state = {
+            allowed = { always = yes }
+            picture = generic_inflation
+            modifier = {
+                stability_factor = -0.05
+                consumer_goods_factor = 0.03
+            }
+        }
+
+        cbm_bank_panic_state = {
+            allowed = { always = yes }
+            picture = generic_bank
+            modifier = {
+                stability_factor = -0.05
+                factory_output = -0.03
+            }
+        }
+
+        cbm_macro_recovery_program = {
+            allowed = { always = yes }
+            picture = generic_reconstruction
+            modifier = {
+                stability_factor = 0.03
+                factory_output = 0.02
+            }
+        }
     }
 }

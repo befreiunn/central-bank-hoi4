@@ -20,8 +20,8 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 - Merkez bankası ve maliye kararları için başlangıç decision seti.
 - Kriz yönetimi ve reform paketleri için ek decision seti.
 - Merkez bankası rejimleri (bağımsız/siyasi/peg/savaş finansmanı) + maliye kompozisyon kararları.
-- Ekonomi dashboard decision/event ekranı (özet + global görünüm placeholder).
-- 90 günlük pulse içinde majör odaklı global GDP cache değişkenleri.
+- Ekonomi dashboard decision/event ekranı (dinamik makro breakdown metinleri ile).
+- 90 günlük pulse içinde gerçek ülke sırası (`cbm_global_gdp_rank`) + majör odaklı global GDP cache değişkenleri.
 - 4 kriz zinciri giriş eventi:
   - Borç
   - Enflasyon

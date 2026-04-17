@@ -355,5 +355,41 @@ decisions = {
                 add_to_variable = { cbm_military_spending_share = -1.5 }
             }
         }
+
+        cbm_shift_spending_to_military = {
+            icon = generic_army_offense
+            cost = 40
+            days_remove = 45
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_military_spending_share = 4 }
+                add_to_variable = { cbm_social_spending_share = -2 }
+                add_to_variable = { cbm_infrastructure_spending_share = -2 }
+            }
+        }
+
+        cbm_raise_tax_band = {
+            icon = generic_consumer_goods
+            cost = 30
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_public_debt = -2 }
+                add_to_variable = { cbm_financial_confidence = -0.8 }
+                add_to_variable = { cbm_consumption_index = -1.2 }
+            }
+        }
+
+        cbm_cut_tax_band = {
+            icon = generic_consumer_goods
+            cost = 30
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_public_debt = 2 }
+                add_to_variable = { cbm_financial_confidence = 0.6 }
+                add_to_variable = { cbm_consumption_index = 1.2 }
+            }
+        }
     }
 }

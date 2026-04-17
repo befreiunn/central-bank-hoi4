@@ -52,7 +52,9 @@ Starting profiles now include tag-based overrides for major economies and select
   4. Crisis risk bucket refresh
   5. Basic AI policy response
 - 90-day pulse placeholder for global GDP ranking refresh.
-- 90-day pulse now updates major-tag global GDP cache variables (`g_cbm_rank_*`) shown in the dashboard event.
+- 90-day pulse now updates:
+  - major-tag global GDP cache variables (`g_cbm_rank_*`)
+  - country-specific real global rank variable (`cbm_global_gdp_rank`) via all-country comparison.
 
 ## 4) Included playable policy actions
 
@@ -75,6 +77,7 @@ Starting profiles now include tag-based overrides for major economies and select
 - Bank panic warning (`cbm_bank_panic.1`)
 - Follow-up steps for debt and FX chains (`cbm_debt_crisis.2/.3`, `cbm_fx_crisis.2/.3`)
 - Follow-up steps for inflation and banking chains (`cbm_infl_spiral.2/.3`, `cbm_bank_panic.2/.3`)
+- Recovery-phase stage 4 events for all four crisis families.
 
 ## 6) Balance notes
 
