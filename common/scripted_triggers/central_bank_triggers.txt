@@ -1,0 +1,35 @@
+# Central Bank trigger thresholds aligned with README.
+central_bank_is_initialized = {
+    has_country_flag = central_bank_initialized
+}
+
+central_bank_inflation_high = {
+    check_variable = { central_bank_inflation > 12 }
+}
+
+central_bank_inflation_critical = {
+    check_variable = { central_bank_inflation > 18 }
+}
+
+central_bank_recession = {
+    check_variable = { central_bank_gdp_growth < -20 }
+}
+
+central_bank_debt_critical = {
+    check_variable = { central_bank_debt_to_gdp > 120 }
+}
+
+central_bank_fx_crisis_risk = {
+    check_variable = { central_bank_currency_strength < 35 }
+    check_variable = { central_bank_reserves < 20 }
+}
+
+needs_emergency_rate_hike = {
+    check_variable = { central_bank_inflation > 16 }
+    check_variable = { central_bank_credibility < 55 }
+}
+
+needs_emergency_rate_cut = {
+    check_variable = { central_bank_gdp_growth < -25 }
+    check_variable = { central_bank_unemployment > 12 }
+}

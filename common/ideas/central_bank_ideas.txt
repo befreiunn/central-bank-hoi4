@@ -1,0 +1,39 @@
+ideas = {
+    country = {
+        central_bank_currency_crisis = {
+            allowed = { always = yes }
+            picture = generic_trade_interdiction
+            modifier = {
+                stability_factor = -0.06
+                factory_output = -0.03
+            }
+        }
+
+        central_bank_debt_crisis = {
+            allowed = { always = yes }
+            picture = generic_strike
+            modifier = {
+                stability_factor = -0.05
+                political_power_gain = -0.05
+            }
+        }
+
+        central_bank_inflation_spiral = {
+            allowed = { always = yes }
+            picture = generic_consumer_goods
+            modifier = {
+                consumer_goods_factor = 0.03
+                stability_factor = -0.04
+            }
+        }
+
+        central_bank_recovery_program = {
+            allowed = { always = yes }
+            picture = generic_reconstruction
+            modifier = {
+                stability_factor = 0.03
+                factory_output = 0.02
+            }
+        }
+    }
+}

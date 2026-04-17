@@ -1,0 +1,625 @@
+cbm_effect_monthly_macro_update = {
+    cbm_effect_apply_central_bank_regime = yes
+    cbm_effect_update_gdp = yes
+    cbm_effect_update_debt_dynamics = yes
+    cbm_effect_apply_inflation_consequences = yes
+    cbm_effect_apply_fiscal_composition = yes
+    cbm_effect_update_spending_quality_channel = yes
+    cbm_effect_update_war_stress_channel = yes
+    cbm_effect_refresh_risk_bucket = yes
+    cbm_effect_apply_risk_spirits = yes
+    cbm_effect_run_ai_policy_response = yes
+    cbm_effect_sanitize_variables = yes
+}
+
+cbm_effect_update_gdp = {
+    set_temp_variable = { cbm_tmp_prev_gdp = cbm_gdp }
+
+    set_temp_variable = { cbm_tmp_gdp_delta = 0.40 } # base monthly drift
+
+    # HOI4 economy drivers (tiered approximation for performance)
+    if = {
+        limit = { num_of_civilian_factories > 20 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.25 }
+    }
+    if = {
+        limit = { num_of_civilian_factories > 50 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.35 }
+    }
+    if = {
+        limit = { num_of_military_factories > 20 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.20 }
+    }
+    if = {
+        limit = { num_of_military_factories > 50 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.30 }
+    }
+    if = {
+        limit = { num_of_naval_factories > 10 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.12 }
+    }
+    if = {
+        limit = { num_of_naval_factories > 25 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.18 }
+    }
+
+    if = {
+        limit = { has_war = yes }
+        if = {
+            limit = { num_of_civilian_factories < 20 }
+            add_to_temp_variable = { cbm_tmp_gdp_delta = -0.20 }
+        }
+        if = {
+            limit = { num_of_convoys < 40 }
+            add_to_temp_variable = { cbm_tmp_gdp_delta = -0.15 }
+        }
+        if = {
+            limit = { num_of_convoys < 15 }
+            add_to_temp_variable = { cbm_tmp_gdp_delta = -0.30 }
+        }
+        if = {
+            limit = { num_of_military_factories > 50 }
+            add_to_temp_variable = { cbm_tmp_gdp_delta = 0.25 }
+        }
+    }
+
+    # Economy-law carrier effects (harder HOI4 tie-in)
+    if = {
+        limit = { has_idea = extensive_conscription }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = -0.08 }
+    }
+    if = {
+        limit = { has_idea = service_by_requirement }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = -0.16 }
+    }
+    if = {
+        limit = { has_idea = total_mobilization }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = -0.22 }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = 0.18 }
+    }
+
+    set_temp_variable = { cbm_tmp_component = cbm_industry_productivity }
+    multiply_temp_variable = { cbm_tmp_component = 0.02 }
+    add_to_temp_variable = { cbm_tmp_gdp_delta = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_investment_index }
+    multiply_temp_variable = { cbm_tmp_component = 0.02 }
+    add_to_temp_variable = { cbm_tmp_gdp_delta = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_consumption_index }
+    multiply_temp_variable = { cbm_tmp_component = 0.015 }
+    add_to_temp_variable = { cbm_tmp_gdp_delta = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_unemployment }
+    multiply_temp_variable = { cbm_tmp_component = 0.10 }
+    subtract_from_temp_variable = { cbm_tmp_gdp_delta = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_crisis_risk }
+    multiply_temp_variable = { cbm_tmp_component = 0.03 }
+    subtract_from_temp_variable = { cbm_tmp_gdp_delta = cbm_tmp_component }
+
+    if = {
+        limit = { has_war = yes }
+        add_to_temp_variable = { cbm_tmp_gdp_delta = -0.75 }
+    }
+
+    add_to_variable = { cbm_gdp = cbm_tmp_gdp_delta }
+    clamp_variable = { var = cbm_gdp min = 20 max = 5000 }
+
+    if = {
+        limit = { check_variable = { cbm_tmp_prev_gdp > 0 } }
+        set_temp_variable = { cbm_tmp_growth = cbm_gdp }
+        subtract_from_temp_variable = { cbm_tmp_growth = cbm_tmp_prev_gdp }
+        divide_temp_variable = { cbm_tmp_growth = cbm_tmp_prev_gdp }
+        multiply_temp_variable = { cbm_tmp_growth = 10000 }
+        set_variable = { cbm_gdp_growth = cbm_tmp_growth }
+    }
+}
+
+cbm_effect_apply_central_bank_regime = {
+    if = {
+        limit = { check_variable = { cbm_cb_regime = 1 } } # Independent
+        add_to_variable = { cbm_financial_confidence = 0.25 }
+        add_to_variable = { cbm_inflation = -0.10 }
+    }
+    if = {
+        limit = { check_variable = { cbm_cb_regime = 2 } } # Political
+        add_to_variable = { cbm_gdp = 0.20 }
+        add_to_variable = { cbm_financial_confidence = -0.20 }
+        add_to_variable = { cbm_inflation = 0.12 }
+    }
+    if = {
+        limit = { check_variable = { cbm_cb_regime = 3 } } # Peg-like
+        add_to_variable = { cbm_fx_pressure = -0.30 }
+        add_to_variable = { cbm_fx_reserves = -0.40 }
+    }
+    if = {
+        limit = { check_variable = { cbm_cb_regime = 4 } } # War financing
+        add_to_variable = { cbm_military_spending_share = 0.30 }
+        add_to_variable = { cbm_inflation = 0.25 }
+        add_to_variable = { cbm_public_debt = 0.60 }
+    }
+}
+
+cbm_effect_update_debt_dynamics = {
+    set_temp_variable = { cbm_tmp_deficit = cbm_fiscal_stance }
+    multiply_temp_variable = { cbm_tmp_deficit = 1.75 }
+
+    set_temp_variable = { cbm_tmp_rate = cbm_policy_rate }
+
+    set_temp_variable = { cbm_tmp_premium = cbm_debt_to_gdp }
+    multiply_temp_variable = { cbm_tmp_premium = 0.015 }
+    add_to_temp_variable = { cbm_tmp_rate = cbm_tmp_premium }
+
+    set_temp_variable = { cbm_tmp_premium = cbm_inflation }
+    multiply_temp_variable = { cbm_tmp_premium = 0.04 }
+    add_to_temp_variable = { cbm_tmp_rate = cbm_tmp_premium }
+
+    set_temp_variable = { cbm_tmp_premium = 100 }
+    subtract_from_temp_variable = { cbm_tmp_premium = cbm_financial_confidence }
+    multiply_temp_variable = { cbm_tmp_premium = 0.03 }
+    add_to_temp_variable = { cbm_tmp_rate = cbm_tmp_premium }
+
+    set_temp_variable = { cbm_tmp_interest_cost = cbm_public_debt }
+    multiply_temp_variable = { cbm_tmp_interest_cost = cbm_tmp_rate }
+    multiply_temp_variable = { cbm_tmp_interest_cost = 0.001 }
+
+    add_to_variable = { cbm_public_debt = cbm_tmp_deficit }
+    add_to_variable = { cbm_public_debt = cbm_tmp_interest_cost }
+
+    if = {
+        limit = { check_variable = { cbm_inflation > 12 } }
+        add_to_variable = { cbm_public_debt = -0.35 }
+    }
+
+    clamp_variable = { var = cbm_public_debt min = 0 max = 8000 }
+
+    if = {
+        limit = { check_variable = { cbm_gdp > 0 } }
+        set_temp_variable = { cbm_tmp_debt_ratio = cbm_public_debt }
+        divide_temp_variable = { cbm_tmp_debt_ratio = cbm_gdp }
+        multiply_temp_variable = { cbm_tmp_debt_ratio = 100 }
+        set_variable = { cbm_debt_to_gdp = cbm_tmp_debt_ratio }
+    }
+
+    clamp_variable = { var = cbm_debt_to_gdp min = 0 max = 300 }
+
+    set_temp_variable = { cbm_tmp_interest_burden = cbm_tmp_interest_cost }
+    if = {
+        limit = { check_variable = { cbm_gdp > 0 } }
+        divide_temp_variable = { cbm_tmp_interest_burden = cbm_gdp }
+        multiply_temp_variable = { cbm_tmp_interest_burden = 100 }
+        set_variable = { cbm_interest_burden = cbm_tmp_interest_burden }
+    }
+    clamp_variable = { var = cbm_interest_burden min = 0 max = 25 }
+}
+
+cbm_effect_apply_inflation_consequences = {
+    set_temp_variable = { cbm_tmp_infl_delta = 0 }
+
+    set_temp_variable = { cbm_tmp_component = cbm_war_econ_stress }
+    multiply_temp_variable = { cbm_tmp_component = 0.035 }
+    add_to_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_variable = { cbm_dbg_infl_war = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_fx_pressure }
+    multiply_temp_variable = { cbm_tmp_component = 0.03 }
+    add_to_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_variable = { cbm_dbg_infl_fx = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_supply_shock_risk }
+    multiply_temp_variable = { cbm_tmp_component = 0.025 }
+    add_to_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_variable = { cbm_dbg_infl_supply = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_policy_rate }
+    multiply_temp_variable = { cbm_tmp_component = 0.18 }
+    subtract_from_temp_variable = { cbm_tmp_infl_delta = cbm_tmp_component }
+    set_temp_variable = { cbm_dbg_infl_policy = cbm_tmp_component }
+    multiply_temp_variable = { cbm_dbg_infl_policy = -1 }
+
+    add_to_variable = { cbm_inflation = cbm_tmp_infl_delta }
+    set_variable = { cbm_dbg_infl_net = cbm_tmp_infl_delta }
+
+    if = {
+        limit = { check_variable = { cbm_inflation > 20 } }
+        add_to_variable = { cbm_consumption_index = -1 }
+        add_to_variable = { cbm_financial_confidence = -1 }
+    }
+
+    if = {
+        limit = { check_variable = { cbm_inflation < 4 } }
+        add_to_variable = { cbm_consumption_index = 0.4 }
+    }
+
+    clamp_variable = { var = cbm_inflation min = 0 max = 60 }
+    clamp_variable = { var = cbm_consumption_index min = 0 max = 100 }
+    clamp_variable = { var = cbm_financial_confidence min = 0 max = 100 }
+}
+
+cbm_effect_refresh_risk_bucket = {
+    set_temp_variable = { cbm_tmp_risk = 0 }
+
+    set_temp_variable = { cbm_tmp_component = cbm_debt_to_gdp }
+    multiply_temp_variable = { cbm_tmp_component = 0.28 }
+    add_to_temp_variable = { cbm_tmp_risk = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_inflation }
+    multiply_temp_variable = { cbm_tmp_component = 1.3 }
+    add_to_temp_variable = { cbm_tmp_risk = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_fx_pressure }
+    multiply_temp_variable = { cbm_tmp_component = 0.45 }
+    add_to_temp_variable = { cbm_tmp_risk = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = 100 }
+    subtract_from_temp_variable = { cbm_tmp_component = cbm_financial_confidence }
+    multiply_temp_variable = { cbm_tmp_component = 0.7 }
+    add_to_temp_variable = { cbm_tmp_risk = cbm_tmp_component }
+
+    set_variable = { cbm_crisis_risk = cbm_tmp_risk }
+    clamp_variable = { var = cbm_crisis_risk min = 0 max = 100 }
+
+    # Early-game tolerance window for onboarding and balance stability.
+    if = {
+        limit = { date < 1937.7.1 }
+        add_to_variable = { cbm_crisis_risk = -8 }
+        clamp_variable = { var = cbm_crisis_risk min = 0 max = 100 }
+    }
+
+    if = {
+        limit = {
+            check_variable = { cbm_debt_to_gdp > 120 }
+            check_variable = { cbm_financial_confidence < 40 }
+            NOT = { has_country_flag = cbm_debt_crisis_cd }
+        }
+        country_event = { id = cbm_debt_crisis.1 days = 1 }
+        set_timed_country_flag = { flag = cbm_debt_crisis_cd days = 90 }
+    }
+
+    if = {
+        limit = {
+            check_variable = { cbm_inflation > 18 }
+            NOT = { has_country_flag = cbm_infl_spiral_cd }
+        }
+        country_event = { id = cbm_infl_spiral.1 days = 1 }
+        set_timed_country_flag = { flag = cbm_infl_spiral_cd days = 90 }
+    }
+
+    if = {
+        limit = {
+            check_variable = { cbm_fx_pressure > 75 }
+            check_variable = { cbm_fx_reserves < 25 }
+            NOT = { has_country_flag = cbm_fx_crisis_cd }
+        }
+        country_event = { id = cbm_fx_crisis.1 days = 1 }
+        set_timed_country_flag = { flag = cbm_fx_crisis_cd days = 90 }
+    }
+
+    if = {
+        limit = {
+            check_variable = { cbm_banking_health < 35 }
+            check_variable = { cbm_crisis_risk > 65 }
+            NOT = { has_country_flag = cbm_bank_panic_cd }
+        }
+        country_event = { id = cbm_bank_panic.1 days = 1 }
+        set_timed_country_flag = { flag = cbm_bank_panic_cd days = 90 }
+    }
+}
+
+cbm_effect_update_spending_quality_channel = {
+    set_temp_variable = { cbm_tmp_effective_spending = 0.5 }
+
+    set_temp_variable = { cbm_tmp_component = cbm_state_capacity }
+    divide_temp_variable = { cbm_tmp_component = 200 }
+    add_to_temp_variable = { cbm_tmp_effective_spending = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_component = cbm_spending_quality }
+    divide_temp_variable = { cbm_tmp_component = 250 }
+    add_to_temp_variable = { cbm_tmp_effective_spending = cbm_tmp_component }
+
+    set_temp_variable = { cbm_tmp_corruption_drag = cbm_shadow_economy }
+    divide_temp_variable = { cbm_tmp_corruption_drag = 100 }
+    subtract_from_temp_variable = { cbm_tmp_effective_spending = cbm_tmp_corruption_drag }
+
+    set_temp_variable = { cbm_tmp_growth_bonus = cbm_tmp_effective_spending }
+    multiply_temp_variable = { cbm_tmp_growth_bonus = 0.25 }
+    add_to_variable = { cbm_investment_index = cbm_tmp_growth_bonus }
+    add_to_variable = { cbm_industry_productivity = cbm_tmp_growth_bonus }
+
+    if = {
+        limit = { check_variable = { cbm_shadow_economy > 35 } }
+        add_to_variable = { cbm_tax_efficiency = -0.01 }
+    }
+    if = {
+        limit = { check_variable = { cbm_state_capacity > 65 } }
+        add_to_variable = { cbm_tax_efficiency = 0.01 }
+    }
+
+    clamp_variable = { var = cbm_tax_efficiency min = 0.40 max = 1.20 }
+    clamp_variable = { var = cbm_investment_index min = 0 max = 100 }
+    clamp_variable = { var = cbm_industry_productivity min = 0 max = 100 }
+}
+
+cbm_effect_apply_fiscal_composition = {
+    # Composition influence (sums are player-managed through decisions)
+    set_temp_variable = { cbm_tmp_fiscal_prod = cbm_infrastructure_spending_share }
+    add_to_temp_variable = { cbm_tmp_fiscal_prod = cbm_industry_spending_share }
+    add_to_temp_variable = { cbm_tmp_fiscal_prod = cbm_research_spending_share }
+    multiply_temp_variable = { cbm_tmp_fiscal_prod = 0.01 }
+    add_to_variable = { cbm_industry_productivity = cbm_tmp_fiscal_prod }
+
+    set_temp_variable = { cbm_tmp_fiscal_stab = cbm_social_spending_share }
+    multiply_temp_variable = { cbm_tmp_fiscal_stab = 0.02 }
+    add_to_variable = { cbm_financial_confidence = cbm_tmp_fiscal_stab }
+
+    set_temp_variable = { cbm_tmp_fiscal_mil = cbm_military_spending_share }
+    multiply_temp_variable = { cbm_tmp_fiscal_mil = 0.02 }
+    add_to_variable = { cbm_war_econ_stress = cbm_tmp_fiscal_mil }
+    add_to_variable = { cbm_consumption_index = -0.08 }
+
+    if = {
+        limit = { check_variable = { cbm_research_spending_share > 18 } }
+        add_to_variable = { cbm_industry_productivity = 0.35 }
+        add_to_variable = { cbm_gdp = 0.20 }
+    }
+
+    # Crowding-out and composition quality penalties.
+    if = {
+        limit = { check_variable = { cbm_military_spending_share > 35 } }
+        add_to_variable = { cbm_consumption_index = -1.2 }
+        add_to_variable = { cbm_financial_confidence = -0.8 }
+    }
+    if = {
+        limit = { check_variable = { cbm_social_spending_share > 40 } }
+        add_to_variable = { cbm_public_debt = 0.6 }
+    }
+    if = {
+        limit = { check_variable = { cbm_infrastructure_spending_share > 30 } }
+        add_to_variable = { cbm_gdp = 0.3 }
+    }
+
+    set_temp_variable = { cbm_tmp_spending_total = cbm_social_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_infrastructure_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_industry_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_military_spending_share }
+    add_to_temp_variable = { cbm_tmp_spending_total = cbm_research_spending_share }
+    set_variable = { cbm_dbg_spending_total = cbm_tmp_spending_total }
+}
+
+cbm_effect_update_war_stress_channel = {
+    if = {
+        limit = { has_war = yes }
+        add_to_variable = { cbm_war_econ_stress = 1.5 }
+        add_to_variable = { cbm_supply_shock_risk = 0.8 }
+        add_to_variable = { cbm_unemployment = -0.2 }
+        add_to_variable = { cbm_consumption_index = -0.5 }
+    }
+    else = {
+        add_to_variable = { cbm_war_econ_stress = -0.8 }
+        add_to_variable = { cbm_supply_shock_risk = -0.5 }
+        add_to_variable = { cbm_unemployment = 0.1 }
+    }
+
+    clamp_variable = { var = cbm_war_econ_stress min = 0 max = 100 }
+    clamp_variable = { var = cbm_supply_shock_risk min = 0 max = 100 }
+    clamp_variable = { var = cbm_unemployment min = 0 max = 30 }
+}
+
+cbm_effect_apply_risk_spirits = {
+    if = {
+        limit = { check_variable = { cbm_crisis_risk > 80 } }
+        if = {
+            limit = { NOT = { has_idea = cbm_currency_crisis } }
+            add_ideas = cbm_currency_crisis
+        }
+    }
+    else = {
+        if = {
+            limit = { has_idea = cbm_currency_crisis }
+            remove_ideas = cbm_currency_crisis
+        }
+    }
+
+    if = {
+        limit = { check_variable = { cbm_debt_to_gdp > 115 } }
+        if = {
+            limit = { NOT = { has_idea = cbm_heavy_debt_burden } }
+            add_ideas = cbm_heavy_debt_burden
+        }
+    }
+    else = {
+        if = {
+            limit = { has_idea = cbm_heavy_debt_burden }
+            remove_ideas = cbm_heavy_debt_burden
+        }
+    }
+
+    if = {
+        limit = { check_variable = { cbm_banking_health < 40 } }
+        if = {
+            limit = { NOT = { has_idea = cbm_fragile_banking_sector } }
+            add_ideas = cbm_fragile_banking_sector
+        }
+    }
+    else = {
+        if = {
+            limit = { has_idea = cbm_fragile_banking_sector }
+            remove_ideas = cbm_fragile_banking_sector
+        }
+    }
+}
+
+cbm_effect_run_ai_policy_response = {
+    if = {
+        limit = {
+            is_ai = yes
+            check_variable = { cbm_crisis_risk > 80 }
+        }
+        if = {
+            limit = { has_government = democratic }
+            add_to_variable = { cbm_policy_rate = 0.8 }
+            add_to_variable = { cbm_liquidity_stance = -1 }
+            add_to_variable = { cbm_fiscal_stance = -1 }
+        }
+        else_if = {
+            limit = { has_government = fascism }
+            add_to_variable = { cbm_policy_rate = 0.4 }
+            add_to_variable = { cbm_liquidity_stance = 0 }
+            add_to_variable = { cbm_fiscal_stance = 1 }
+            add_to_variable = { cbm_public_debt = 1.2 }
+        }
+        else_if = {
+            limit = { has_government = communism }
+            add_to_variable = { cbm_policy_rate = 0.3 }
+            add_to_variable = { cbm_liquidity_stance = 1 }
+            add_to_variable = { cbm_fiscal_stance = 0 }
+            add_to_variable = { cbm_fx_pressure = -1.5 }
+        }
+        else = {
+            add_to_variable = { cbm_policy_rate = 0.6 }
+            add_to_variable = { cbm_liquidity_stance = -1 }
+            add_to_variable = { cbm_fiscal_stance = -1 }
+        }
+    }
+
+    if = {
+        limit = {
+            is_ai = yes
+            check_variable = { cbm_gdp_growth < -30 }
+            check_variable = { cbm_crisis_risk < 60 }
+        }
+        add_to_variable = { cbm_policy_rate = -0.5 }
+        add_to_variable = { cbm_fiscal_stance = 1 }
+    }
+
+    # Reserve/debt-aware package reactions.
+    if = {
+        limit = {
+            is_ai = yes
+            check_variable = { cbm_fx_reserves < 20 }
+            check_variable = { cbm_fx_pressure > 65 }
+        }
+        add_to_variable = { cbm_policy_rate = 0.4 }
+        add_to_variable = { cbm_liquidity_stance = -1 }
+        add_to_variable = { cbm_fx_reserves = -1.2 }
+    }
+    if = {
+        limit = {
+            is_ai = yes
+            check_variable = { cbm_debt_to_gdp > 120 }
+            check_variable = { cbm_financial_confidence < 45 }
+        }
+        add_to_variable = { cbm_fiscal_stance = -1 }
+        add_to_variable = { cbm_public_debt = -0.6 }
+        add_to_variable = { cbm_financial_confidence = 0.3 }
+    }
+    if = {
+        limit = {
+            is_ai = yes
+            has_war = yes
+            check_variable = { cbm_war_econ_stress > 40 }
+        }
+        add_to_variable = { cbm_military_spending_share = 0.6 }
+        add_to_variable = { cbm_social_spending_share = -0.5 }
+    }
+
+    clamp_variable = { var = cbm_policy_rate min = 0 max = 15 }
+    clamp_variable = { var = cbm_liquidity_stance min = -2 max = 2 }
+    clamp_variable = { var = cbm_fiscal_stance min = -2 max = 2 }
+}
+
+cbm_effect_quarterly_structural_update = {
+    # Quarterly global GDP cache (top table v1 - major-centric)
+    set_global_flag = g_cbm_rank_refresh_ran
+
+    if = {
+        limit = { tag = USA }
+        set_global_variable = { g_cbm_rank_usa = cbm_gdp }
+    }
+    if = {
+        limit = { tag = GER }
+        set_global_variable = { g_cbm_rank_ger = cbm_gdp }
+    }
+    if = {
+        limit = { tag = SOV }
+        set_global_variable = { g_cbm_rank_sov = cbm_gdp }
+    }
+    if = {
+        limit = { tag = ENG }
+        set_global_variable = { g_cbm_rank_eng = cbm_gdp }
+    }
+    if = {
+        limit = { tag = JAP }
+        set_global_variable = { g_cbm_rank_jap = cbm_gdp }
+    }
+    if = {
+        limit = { tag = FRA }
+        set_global_variable = { g_cbm_rank_fra = cbm_gdp }
+    }
+    if = {
+        limit = { tag = ITA }
+        set_global_variable = { g_cbm_rank_ita = cbm_gdp }
+    }
+    if = {
+        limit = { tag = CHI }
+        set_global_variable = { g_cbm_rank_chi = cbm_gdp }
+    }
+    if = {
+        limit = { tag = TUR }
+        set_global_variable = { g_cbm_rank_tur = cbm_gdp }
+    }
+    if = {
+        limit = { tag = ARG }
+        set_global_variable = { g_cbm_rank_arg = cbm_gdp }
+    }
+
+    # Top-10 display cache (tracked majors + regionals)
+    set_global_variable = { g_cbm_rank_1_score = g_cbm_rank_usa }
+    set_global_variable = { g_cbm_rank_2_score = g_cbm_rank_ger }
+    set_global_variable = { g_cbm_rank_3_score = g_cbm_rank_sov }
+    set_global_variable = { g_cbm_rank_4_score = g_cbm_rank_eng }
+    set_global_variable = { g_cbm_rank_5_score = g_cbm_rank_jap }
+    set_global_variable = { g_cbm_rank_6_score = g_cbm_rank_fra }
+    set_global_variable = { g_cbm_rank_7_score = g_cbm_rank_ita }
+    set_global_variable = { g_cbm_rank_8_score = g_cbm_rank_chi }
+    set_global_variable = { g_cbm_rank_9_score = g_cbm_rank_tur }
+    set_global_variable = { g_cbm_rank_10_score = g_cbm_rank_arg }
+
+    # Real global rank for current country: count countries with higher GDP.
+    set_variable = { cbm_global_gdp_rank = 1 }
+    every_country = {
+        limit = { check_variable = { cbm_gdp > ROOT.cbm_gdp } }
+        ROOT = { add_to_variable = { cbm_global_gdp_rank = 1 } }
+    }
+}
+
+cbm_effect_sanitize_variables = {
+    clamp_variable = { var = cbm_gdp min = 20 max = 5000 }
+    clamp_variable = { var = cbm_gdp_growth min = -2000 max = 2000 }
+    clamp_variable = { var = cbm_inflation min = 0 max = 60 }
+    clamp_variable = { var = cbm_unemployment min = 0 max = 30 }
+    clamp_variable = { var = cbm_public_debt min = 0 max = 8000 }
+    clamp_variable = { var = cbm_debt_to_gdp min = 0 max = 300 }
+    clamp_variable = { var = cbm_interest_burden min = 0 max = 25 }
+    clamp_variable = { var = cbm_financial_confidence min = 0 max = 100 }
+    clamp_variable = { var = cbm_fx_pressure min = 0 max = 100 }
+    clamp_variable = { var = cbm_fx_reserves min = 0 max = 100 }
+    clamp_variable = { var = cbm_crisis_risk min = 0 max = 100 }
+    clamp_variable = { var = cbm_war_econ_stress min = 0 max = 100 }
+    clamp_variable = { var = cbm_supply_shock_risk min = 0 max = 100 }
+    clamp_variable = { var = cbm_policy_rate min = 0 max = 15 }
+    clamp_variable = { var = cbm_liquidity_stance min = -2 max = 2 }
+    clamp_variable = { var = cbm_fiscal_stance min = -2 max = 2 }
+    clamp_variable = { var = cbm_spending_quality min = 0 max = 100 }
+    clamp_variable = { var = cbm_state_capacity min = 0 max = 100 }
+    clamp_variable = { var = cbm_shadow_economy min = 0 max = 60 }
+    clamp_variable = { var = cbm_banking_health min = 0 max = 100 }
+    clamp_variable = { var = cbm_social_spending_share min = 0 max = 60 }
+    clamp_variable = { var = cbm_infrastructure_spending_share min = 0 max = 60 }
+    clamp_variable = { var = cbm_industry_spending_share min = 0 max = 60 }
+    clamp_variable = { var = cbm_military_spending_share min = 0 max = 60 }
+    clamp_variable = { var = cbm_research_spending_share min = 0 max = 40 }
+    clamp_variable = { var = cbm_cb_regime min = 1 max = 4 }
+    clamp_variable = { var = cbm_global_gdp_rank min = 1 max = 300 }
+}

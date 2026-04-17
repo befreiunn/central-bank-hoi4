@@ -1,0 +1,231 @@
+add_namespace = central_bank
+
+country_event = {
+    id = central_bank.10
+    title = central_bank.10.t
+    desc = central_bank.10.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.10.a
+    }
+}
+
+# Triggered-only crisis entry events
+country_event = {
+    id = central_bank.100
+    title = central_bank.100.t
+    desc = central_bank.100.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.100.a
+        add_ideas = central_bank_debt_crisis
+        add_to_variable = { central_bank_credibility = -2 }
+        country_event = { id = central_bank.101 days = 30 }
+    }
+
+    option = {
+        name = central_bank.100.b
+        add_to_variable = { central_bank_debt = -10 }
+        add_to_variable = { central_bank_gdp_growth = -10 }
+        country_event = { id = central_bank.102 days = 45 }
+    }
+}
+
+country_event = {
+    id = central_bank.101
+    title = central_bank.101.t
+    desc = central_bank.101.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.101.a
+        add_to_variable = { central_bank_debt = -8 }
+        add_to_variable = { central_bank_credibility = 1 }
+        country_event = { id = central_bank.103 days = 60 }
+    }
+}
+
+country_event = {
+    id = central_bank.102
+    title = central_bank.102.t
+    desc = central_bank.102.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.102.a
+        add_to_variable = { central_bank_inflation = 1.2 }
+        add_to_variable = { central_bank_credibility = -1 }
+        country_event = { id = central_bank.103 days = 60 }
+    }
+}
+
+country_event = {
+    id = central_bank.103
+    title = central_bank.103.t
+    desc = central_bank.103.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.103.a
+        if = { limit = { has_idea = central_bank_debt_crisis } remove_ideas = central_bank_debt_crisis }
+        add_ideas = central_bank_recovery_program
+    }
+}
+
+country_event = {
+    id = central_bank.200
+    title = central_bank.200.t
+    desc = central_bank.200.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.200.a
+        add_ideas = central_bank_inflation_spiral
+        add_to_variable = { central_bank_interest_rate = 1 }
+        country_event = { id = central_bank.201 days = 30 }
+    }
+
+    option = {
+        name = central_bank.200.b
+        add_to_variable = { central_bank_money_supply = -4 }
+        country_event = { id = central_bank.202 days = 30 }
+    }
+}
+
+country_event = {
+    id = central_bank.201
+    title = central_bank.201.t
+    desc = central_bank.201.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.201.a
+        add_to_variable = { central_bank_inflation = -1 }
+        country_event = { id = central_bank.203 days = 45 }
+    }
+}
+
+country_event = {
+    id = central_bank.202
+    title = central_bank.202.t
+    desc = central_bank.202.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.202.a
+        add_to_variable = { central_bank_inflation = -0.5 }
+        add_to_variable = { central_bank_gdp_growth = -3 }
+        country_event = { id = central_bank.203 days = 45 }
+    }
+}
+
+country_event = {
+    id = central_bank.203
+    title = central_bank.203.t
+    desc = central_bank.203.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.203.a
+        if = { limit = { has_idea = central_bank_inflation_spiral } remove_ideas = central_bank_inflation_spiral }
+        add_to_variable = { central_bank_credibility = 1 }
+    }
+}
+
+country_event = {
+    id = central_bank.300
+    title = central_bank.300.t
+    desc = central_bank.300.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.300.a
+        add_ideas = central_bank_currency_crisis
+        add_to_variable = { central_bank_reserves = -8 }
+        country_event = { id = central_bank.301 days = 30 }
+    }
+
+    option = {
+        name = central_bank.300.b
+        add_to_variable = { central_bank_currency_strength = -4 }
+        add_to_variable = { central_bank_inflation = 1 }
+        country_event = { id = central_bank.302 days = 30 }
+    }
+}
+
+country_event = {
+    id = central_bank.301
+    title = central_bank.301.t
+    desc = central_bank.301.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.301.a
+        add_to_variable = { central_bank_currency_strength = 2 }
+        country_event = { id = central_bank.303 days = 60 }
+    }
+}
+
+country_event = {
+    id = central_bank.302
+    title = central_bank.302.t
+    desc = central_bank.302.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.302.a
+        add_to_variable = { central_bank_currency_strength = 1 }
+        country_event = { id = central_bank.303 days = 60 }
+    }
+}
+
+country_event = {
+    id = central_bank.303
+    title = central_bank.303.t
+    desc = central_bank.303.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = central_bank.303.a
+        if = { limit = { has_idea = central_bank_currency_crisis } remove_ideas = central_bank_currency_crisis }
+        add_to_variable = { central_bank_credibility = 0.7 }
+    }
+}
+
+# MTTH informational event with explicit cooldown guard.
+country_event = {
+    id = central_bank.900
+    title = central_bank.900.t
+    desc = central_bank.900.d
+    picture = GFX_report_event_default
+    mean_time_to_happen = {
+        days = 120
+    }
+    trigger = {
+        central_bank_is_initialized = yes
+        NOT = { has_country_flag = central_bank_info_cd }
+    }
+
+    immediate = {
+        set_timed_country_flag = { flag = central_bank_info_cd days = 120 }
+    }
+
+    option = {
+        name = central_bank.900.a
+    }
+}
