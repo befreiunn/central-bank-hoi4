@@ -23,7 +23,10 @@ rg -q "cbm_effect_monthly_macro_update" common/scripted_effects/cbm_scripted_eff
 rg -q "country_event = \{ id = cbm\.1000" events/cbm_events.txt || rg -q "id = cbm\.1000" events/cbm_events.txt
 rg -q "cbm_central_bank_policies" common/decisions/cbm_decisions.txt
 rg -q "cbm_reform_packages" common/decisions/cbm_decisions.txt
+rg -q "cbm_central_bank_regimes" common/decisions/cbm_decisions.txt
+rg -q "cbm_fiscal_composition" common/decisions/cbm_decisions.txt
 rg -q "^l_english:" localisation/english/cbm_l_english.yml
+rg -q "g_cbm_rank_usa" common/scripted_effects/cbm_scripted_effects.txt
 
 # ensure all event IDs used in file have loc title keys
 while read -r event_id; do

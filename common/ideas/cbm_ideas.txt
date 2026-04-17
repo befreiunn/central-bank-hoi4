@@ -45,5 +45,43 @@ ideas = {
                 consumer_goods_factor = 0.02
             }
         }
+
+        cbm_political_controlled_central_bank = {
+            allowed = { always = yes }
+            picture = generic_political_pressure
+            modifier = {
+                political_power_gain = 0.05
+                stability_factor = -0.03
+                consumer_goods_factor = 0.01
+            }
+        }
+
+        cbm_fixed_exchange_regime = {
+            allowed = { always = yes }
+            picture = generic_treaty
+            modifier = {
+                stability_factor = 0.02
+                factory_output = -0.01
+            }
+        }
+
+        cbm_war_finance_regime = {
+            allowed = { always = yes }
+            picture = war_propaganda
+            modifier = {
+                war_support_factor = 0.08
+                consumer_goods_factor = 0.04
+                stability_factor = -0.04
+            }
+        }
+
+        cbm_fragile_banking_sector = {
+            allowed = { always = yes }
+            picture = generic_bank
+            modifier = {
+                stability_factor = -0.03
+                political_power_gain = -0.03
+            }
+        }
     }
 }

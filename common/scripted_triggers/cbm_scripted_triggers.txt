@@ -27,3 +27,11 @@ cbm_is_low_confidence_trigger = {
 cbm_is_banking_fragile_trigger = {
     check_variable = { cbm_banking_health < 40 }
 }
+
+cbm_is_low_reserve_trigger = {
+    check_variable = { cbm_fx_reserves < 25 }
+}
+
+cbm_is_cb_independent_trigger = {
+    check_variable = { cbm_cb_regime = 1 }
+}

@@ -40,6 +40,8 @@ Optional scaffolded variables already included in scripts for Phase 2 extension:
 - `cbm_fx_pressure`, `cbm_fx_reserves`, `cbm_banking_health`
 - `cbm_industry_productivity`, `cbm_war_econ_stress`, `cbm_supply_shock_risk`
 
+Starting profiles now include tag-based overrides for major economies and selected regional powers (e.g. USA, GER, SOV, ENG, FRA, JAP, ITA, TUR, ARG) to avoid homogeneous starts.
+
 ## 3) MVP loop implemented
 
 - Monthly: hidden event calls `cbm_effect_monthly_macro_update`.
@@ -50,6 +52,7 @@ Optional scaffolded variables already included in scripts for Phase 2 extension:
   4. Crisis risk bucket refresh
   5. Basic AI policy response
 - 90-day pulse placeholder for global GDP ranking refresh.
+- 90-day pulse now updates major-tag global GDP cache variables (`g_cbm_rank_*`) shown in the dashboard event.
 
 ## 4) Included playable policy actions
 
@@ -61,6 +64,8 @@ Optional scaffolded variables already included in scripts for Phase 2 extension:
 - Fiscal stance shifts (austerity / neutral / expansion)
 - Crisis management actions (war bonds, capital controls, debt reprofiling)
 - Reform actions (tax collection, state capacity drive, anti-corruption)
+- Central bank regime actions (independent, political, peg-like, war finance)
+- Fiscal composition actions (social/infra/industry/R&D reallocation)
 
 ## 5) Included crisis entry events (phase seeds)
 

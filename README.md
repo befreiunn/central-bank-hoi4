@@ -5,6 +5,7 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 ## Eklenen MVP içerik
 
 - Aylık makro güncelleme döngüsü (`on_actions` + hidden monthly event).
+- Ülke bazlı başlangıç profilleri (majörler + örnek bölgesel güçler için farklı başlangıç).
 - Kriz event spam'ini azaltmak için 90 günlük kriz cooldown bayrakları.
 - Basit AI politika tepkisi (yüksek riskte sıkılaşma, düşük riskli daralmada destek).
 - Scripted effect omurgası:
@@ -18,7 +19,9 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 - Scripted trigger seti (yüksek enflasyon, kritik borç, FX krizi vb.).
 - Merkez bankası ve maliye kararları için başlangıç decision seti.
 - Kriz yönetimi ve reform paketleri için ek decision seti.
+- Merkez bankası rejimleri (bağımsız/siyasi/peg/savaş finansmanı) + maliye kompozisyon kararları.
 - Ekonomi dashboard decision/event ekranı (özet + global görünüm placeholder).
+- 90 günlük pulse içinde majör odaklı global GDP cache değişkenleri.
 - 4 kriz zinciri giriş eventi:
   - Borç
   - Enflasyon

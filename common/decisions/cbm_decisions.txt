@@ -243,4 +243,117 @@ decisions = {
             }
         }
     }
+
+    cbm_central_bank_regimes = {
+        icon = generic_economic
+
+        cbm_regime_independent = {
+            icon = generic_decision
+            cost = 60
+            days_remove = 90
+            visible = { always = yes }
+            complete_effect = {
+                set_variable = { cbm_cb_regime = 1 }
+                if = { limit = { has_idea = cbm_political_controlled_central_bank } remove_ideas = cbm_political_controlled_central_bank }
+                if = { limit = { has_idea = cbm_fixed_exchange_regime } remove_ideas = cbm_fixed_exchange_regime }
+                if = { limit = { has_idea = cbm_war_finance_regime } remove_ideas = cbm_war_finance_regime }
+                add_ideas = cbm_reliable_central_bank
+            }
+        }
+
+        cbm_regime_political = {
+            icon = generic_decision
+            cost = 45
+            days_remove = 90
+            visible = { always = yes }
+            complete_effect = {
+                set_variable = { cbm_cb_regime = 2 }
+                if = { limit = { has_idea = cbm_reliable_central_bank } remove_ideas = cbm_reliable_central_bank }
+                if = { limit = { has_idea = cbm_fixed_exchange_regime } remove_ideas = cbm_fixed_exchange_regime }
+                if = { limit = { has_idea = cbm_war_finance_regime } remove_ideas = cbm_war_finance_regime }
+                add_ideas = cbm_political_controlled_central_bank
+            }
+        }
+
+        cbm_regime_fixed_fx = {
+            icon = generic_decision
+            cost = 55
+            days_remove = 90
+            visible = { always = yes }
+            complete_effect = {
+                set_variable = { cbm_cb_regime = 3 }
+                if = { limit = { has_idea = cbm_reliable_central_bank } remove_ideas = cbm_reliable_central_bank }
+                if = { limit = { has_idea = cbm_political_controlled_central_bank } remove_ideas = cbm_political_controlled_central_bank }
+                if = { limit = { has_idea = cbm_war_finance_regime } remove_ideas = cbm_war_finance_regime }
+                add_ideas = cbm_fixed_exchange_regime
+            }
+        }
+
+        cbm_regime_war_finance = {
+            icon = generic_decision
+            cost = 70
+            days_remove = 120
+            visible = { has_war = yes }
+            complete_effect = {
+                set_variable = { cbm_cb_regime = 4 }
+                if = { limit = { has_idea = cbm_reliable_central_bank } remove_ideas = cbm_reliable_central_bank }
+                if = { limit = { has_idea = cbm_political_controlled_central_bank } remove_ideas = cbm_political_controlled_central_bank }
+                if = { limit = { has_idea = cbm_fixed_exchange_regime } remove_ideas = cbm_fixed_exchange_regime }
+                add_ideas = cbm_war_finance_regime
+                add_to_variable = { cbm_war_econ_stress = 3 }
+            }
+        }
+    }
+
+    cbm_fiscal_composition = {
+        icon = generic_production
+
+        cbm_shift_spending_to_infrastructure = {
+            icon = generic_construct_civ_factory
+            cost = 35
+            days_remove = 45
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_infrastructure_spending_share = 4 }
+                add_to_variable = { cbm_military_spending_share = -2 }
+                add_to_variable = { cbm_social_spending_share = -2 }
+            }
+        }
+
+        cbm_shift_spending_to_social = {
+            icon = generic_improve_worker_conditions
+            cost = 35
+            days_remove = 45
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_social_spending_share = 4 }
+                add_to_variable = { cbm_industry_spending_share = -2 }
+                add_to_variable = { cbm_military_spending_share = -2 }
+            }
+        }
+
+        cbm_shift_spending_to_industry = {
+            icon = generic_industry
+            cost = 35
+            days_remove = 45
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_industry_spending_share = 4 }
+                add_to_variable = { cbm_social_spending_share = -2 }
+                add_to_variable = { cbm_military_spending_share = -2 }
+            }
+        }
+
+        cbm_shift_spending_to_research = {
+            icon = generic_research
+            cost = 40
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_research_spending_share = 3 }
+                add_to_variable = { cbm_social_spending_share = -1.5 }
+                add_to_variable = { cbm_military_spending_share = -1.5 }
+            }
+        }
+    }
 }
