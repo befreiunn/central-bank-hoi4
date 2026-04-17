@@ -1,0 +1,151 @@
+on_actions = {
+    on_startup = {
+        effect = {
+            every_country = {
+                limit = { NOT = { has_country_flag = cbm_initialized } }
+                set_country_flag = cbm_initialized
+
+                set_variable = { cbm_gdp = 100 }
+                set_variable = { cbm_gdp_growth = 0 }
+                set_variable = { cbm_inflation = 4 }
+                set_variable = { cbm_unemployment = 9 }
+                set_variable = { cbm_public_debt = 55 }
+                set_variable = { cbm_debt_to_gdp = 55 }
+                set_variable = { cbm_financial_confidence = 55 }
+                set_variable = { cbm_crisis_risk = 20 }
+
+                set_variable = { cbm_policy_rate = 4 }
+                set_variable = { cbm_liquidity_stance = 0 }
+                set_variable = { cbm_fiscal_stance = 0 }
+
+                set_variable = { cbm_fx_pressure = 20 }
+                set_variable = { cbm_fx_reserves = 50 }
+                set_variable = { cbm_banking_health = 65 }
+                set_variable = { cbm_investment_index = 50 }
+                set_variable = { cbm_consumption_index = 50 }
+                set_variable = { cbm_industry_productivity = 50 }
+                set_variable = { cbm_war_econ_stress = 0 }
+                set_variable = { cbm_supply_shock_risk = 10 }
+                set_variable = { cbm_spending_quality = 45 }
+                set_variable = { cbm_state_capacity = 45 }
+                set_variable = { cbm_shadow_economy = 25 }
+                set_variable = { cbm_tax_efficiency = 0.75 }
+                set_variable = { cbm_interest_burden = 2 }
+                set_variable = { cbm_social_spending_share = 30 }
+                set_variable = { cbm_infrastructure_spending_share = 20 }
+                set_variable = { cbm_industry_spending_share = 20 }
+                set_variable = { cbm_military_spending_share = 20 }
+                set_variable = { cbm_research_spending_share = 10 }
+                set_variable = { cbm_cb_regime = 1 } # 1 independent, 2 political, 3 peg-like, 4 wartime finance
+                set_variable = { cbm_global_gdp_rank = 99 }
+                set_variable = { cbm_dbg_infl_war = 0 }
+                set_variable = { cbm_dbg_infl_fx = 0 }
+                set_variable = { cbm_dbg_infl_supply = 0 }
+                set_variable = { cbm_dbg_infl_policy = 0 }
+                set_variable = { cbm_dbg_infl_net = 0 }
+                set_variable = { cbm_dbg_spending_total = 100 }
+
+                # Country profile overrides (starting balance pass v1)
+                if = {
+                    limit = { tag = USA }
+                    set_variable = { cbm_gdp = 180 }
+                    set_variable = { cbm_inflation = 3 }
+                    set_variable = { cbm_unemployment = 8 }
+                    set_variable = { cbm_public_debt = 70 }
+                    set_variable = { cbm_financial_confidence = 75 }
+                    set_variable = { cbm_fx_reserves = 75 }
+                    set_variable = { cbm_state_capacity = 70 }
+                    set_variable = { cbm_tax_efficiency = 1.05 }
+                }
+                if = {
+                    limit = { tag = GER }
+                    set_variable = { cbm_gdp = 145 }
+                    set_variable = { cbm_inflation = 5 }
+                    set_variable = { cbm_unemployment = 6 }
+                    set_variable = { cbm_public_debt = 80 }
+                    set_variable = { cbm_financial_confidence = 62 }
+                    set_variable = { cbm_military_spending_share = 30 }
+                    set_variable = { cbm_cb_regime = 2 }
+                }
+                if = {
+                    limit = { tag = SOV }
+                    set_variable = { cbm_gdp = 135 }
+                    set_variable = { cbm_inflation = 6 }
+                    set_variable = { cbm_unemployment = 5 }
+                    set_variable = { cbm_public_debt = 40 }
+                    set_variable = { cbm_financial_confidence = 58 }
+                    set_variable = { cbm_state_capacity = 60 }
+                    set_variable = { cbm_cb_regime = 2 }
+                }
+                if = {
+                    limit = { tag = ENG }
+                    set_variable = { cbm_gdp = 140 }
+                    set_variable = { cbm_public_debt = 95 }
+                    set_variable = { cbm_financial_confidence = 68 }
+                    set_variable = { cbm_fx_reserves = 62 }
+                    set_variable = { cbm_state_capacity = 67 }
+                }
+                if = {
+                    limit = { tag = FRA }
+                    set_variable = { cbm_gdp = 125 }
+                    set_variable = { cbm_inflation = 5 }
+                    set_variable = { cbm_public_debt = 92 }
+                    set_variable = { cbm_financial_confidence = 55 }
+                }
+                if = {
+                    limit = { tag = JAP }
+                    set_variable = { cbm_gdp = 120 }
+                    set_variable = { cbm_inflation = 5 }
+                    set_variable = { cbm_public_debt = 85 }
+                    set_variable = { cbm_financial_confidence = 57 }
+                    set_variable = { cbm_fx_reserves = 55 }
+                    set_variable = { cbm_cb_regime = 3 }
+                }
+                if = {
+                    limit = { tag = ITA }
+                    set_variable = { cbm_gdp = 110 }
+                    set_variable = { cbm_public_debt = 98 }
+                    set_variable = { cbm_financial_confidence = 52 }
+                    set_variable = { cbm_shadow_economy = 30 }
+                }
+                if = {
+                    limit = { tag = TUR }
+                    set_variable = { cbm_gdp = 75 }
+                    set_variable = { cbm_inflation = 8 }
+                    set_variable = { cbm_unemployment = 11 }
+                    set_variable = { cbm_public_debt = 70 }
+                    set_variable = { cbm_financial_confidence = 45 }
+                    set_variable = { cbm_state_capacity = 42 }
+                    set_variable = { cbm_shadow_economy = 32 }
+                    set_variable = { cbm_fx_reserves = 35 }
+                }
+                if = {
+                    limit = { tag = ARG }
+                    set_variable = { cbm_gdp = 82 }
+                    set_variable = { cbm_inflation = 10 }
+                    set_variable = { cbm_unemployment = 12 }
+                    set_variable = { cbm_public_debt = 88 }
+                    set_variable = { cbm_financial_confidence = 40 }
+                    set_variable = { cbm_shadow_economy = 35 }
+                    set_variable = { cbm_fx_reserves = 28 }
+                }
+            }
+        }
+    }
+
+    on_monthly_pulse = {
+        effect = {
+            every_country = {
+                country_event = { id = cbm.1000 }
+            }
+        }
+    }
+
+    on_90_days_pulse = {
+        effect = {
+            every_country = {
+                country_event = { id = cbm.1090 }
+            }
+        }
+    }
+}
