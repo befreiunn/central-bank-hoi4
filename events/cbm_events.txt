@@ -44,6 +44,7 @@ country_event = {
         add_to_variable = { cbm_fx_reserves = 10 }
         add_stability = -0.05
         add_to_variable = { cbm_financial_confidence = 1 }
+        country_event = { id = cbm_debt_crisis.2 days = 20 }
     }
 
     option = {
@@ -51,6 +52,7 @@ country_event = {
         add_to_variable = { cbm_public_debt = -6 }
         add_to_variable = { cbm_financial_confidence = -2 }
         add_to_variable = { cbm_inflation = 1.5 }
+        country_event = { id = cbm_debt_crisis.3 days = 20 }
     }
 }
 
@@ -88,6 +90,7 @@ country_event = {
         add_to_variable = { cbm_fx_reserves = -12 }
         add_to_variable = { cbm_fx_pressure = -8 }
         add_to_variable = { cbm_financial_confidence = 2 }
+        country_event = { id = cbm_fx_crisis.2 days = 14 }
     }
 
     option = {
@@ -95,6 +98,7 @@ country_event = {
         add_to_variable = { cbm_inflation = 1.6 }
         add_to_variable = { cbm_fx_pressure = -5 }
         add_to_variable = { cbm_gdp = -1 }
+        country_event = { id = cbm_fx_crisis.3 days = 14 }
     }
 }
 
@@ -117,5 +121,65 @@ country_event = {
         add_to_variable = { cbm_banking_health = 4 }
         add_to_variable = { cbm_financial_confidence = -1 }
         add_to_variable = { cbm_crisis_risk = 3 }
+    }
+}
+
+country_event = {
+    id = cbm_debt_crisis.2
+    title = cbm_debt_crisis.2.t
+    desc = cbm_debt_crisis.2.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_debt_crisis.2.a
+        add_to_variable = { cbm_state_capacity = 1 }
+        add_to_variable = { cbm_tax_efficiency = 0.02 }
+        add_to_variable = { cbm_crisis_risk = -4 }
+    }
+}
+
+country_event = {
+    id = cbm_debt_crisis.3
+    title = cbm_debt_crisis.3.t
+    desc = cbm_debt_crisis.3.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_debt_crisis.3.a
+        add_to_variable = { cbm_financial_confidence = -1 }
+        add_to_variable = { cbm_crisis_risk = -2 }
+        add_stability = -0.02
+    }
+}
+
+country_event = {
+    id = cbm_fx_crisis.2
+    title = cbm_fx_crisis.2.t
+    desc = cbm_fx_crisis.2.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_fx_crisis.2.a
+        add_to_variable = { cbm_fx_reserves = -6 }
+        add_to_variable = { cbm_fx_pressure = -4 }
+        add_to_variable = { cbm_inflation = 0.6 }
+    }
+}
+
+country_event = {
+    id = cbm_fx_crisis.3
+    title = cbm_fx_crisis.3.t
+    desc = cbm_fx_crisis.3.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_fx_crisis.3.a
+        add_to_variable = { cbm_gdp = -0.8 }
+        add_to_variable = { cbm_inflation = 0.8 }
+        add_to_variable = { cbm_financial_confidence = 1 }
     }
 }

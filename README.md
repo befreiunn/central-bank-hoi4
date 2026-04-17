@@ -11,9 +11,13 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
   - GSYH güncellemesi
   - Borç dinamiği
   - Enflasyon sonuçları
+  - Harcama kalitesi / kapasite / kayıt dışılık kanalı
+  - Savaş stresi kanalı
   - Kompozit kriz riski güncellemesi
+  - Riske bağlı national spirit uygulaması
 - Scripted trigger seti (yüksek enflasyon, kritik borç, FX krizi vb.).
 - Merkez bankası ve maliye kararları için başlangıç decision seti.
+- Kriz yönetimi ve reform paketleri için ek decision seti.
 - 4 kriz zinciri giriş eventi:
   - Borç
   - Enflasyon
@@ -28,6 +32,7 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 - `common/scripted_effects/`
 - `common/scripted_triggers/`
 - `common/decisions/`
+- `common/ideas/`
 - `events/`
 - `localisation/english/`
 - `docs/`

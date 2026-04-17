@@ -26,6 +26,11 @@ on_actions = {
                 set_variable = { cbm_industry_productivity = 50 }
                 set_variable = { cbm_war_econ_stress = 0 }
                 set_variable = { cbm_supply_shock_risk = 10 }
+                set_variable = { cbm_spending_quality = 45 }
+                set_variable = { cbm_state_capacity = 45 }
+                set_variable = { cbm_shadow_economy = 25 }
+                set_variable = { cbm_tax_efficiency = 0.75 }
+                set_variable = { cbm_interest_burden = 2 }
             }
         }
     }

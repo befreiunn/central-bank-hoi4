@@ -1,0 +1,49 @@
+ideas = {
+    country = {
+        cbm_reliable_central_bank = {
+            allowed = { always = yes }
+            picture = generic_economy
+            modifier = {
+                stability_factor = 0.05
+                consumer_goods_factor = -0.02
+            }
+        }
+
+        cbm_disciplined_fiscal_framework = {
+            allowed = { always = yes }
+            picture = generic_political_reform
+            modifier = {
+                political_power_gain = 0.03
+                consumer_goods_factor = -0.01
+            }
+        }
+
+        cbm_heavy_debt_burden = {
+            allowed = { always = yes }
+            picture = generic_strike
+            modifier = {
+                political_power_gain = -0.10
+                industrial_capacity_factory = -0.05
+            }
+        }
+
+        cbm_currency_crisis = {
+            allowed = { always = yes }
+            picture = generic_trade_interdiction
+            modifier = {
+                stability_factor = -0.08
+                consumer_goods_factor = 0.03
+                factory_output = -0.04
+            }
+        }
+
+        cbm_war_bonds_campaign = {
+            allowed = { always = yes }
+            picture = war_propaganda
+            modifier = {
+                war_support_factor = 0.05
+                consumer_goods_factor = 0.02
+            }
+        }
+    }
+}

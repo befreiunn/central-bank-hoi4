@@ -12,6 +12,8 @@ This document converts the high-level economy design into a practical Hearts of 
   - Reusable threshold triggers (inflation high, debt critical, FX crisis, policy space).
 - `common/decisions/cbm_decisions.txt`
   - Central bank and fiscal policy decisions.
+- `common/ideas/cbm_ideas.txt`
+  - Risk-state and policy-framework spirits.
 - `events/cbm_events.txt`
   - Hidden monthly runner + visible crisis chain entry events.
 - `localisation/english/cbm_l_english.yml`
@@ -55,6 +57,8 @@ Optional scaffolded variables already included in scripts for Phase 2 extension:
 - Defend currency with reserves
 - Emergency liquidity window
 - Fiscal stance shifts (austerity / neutral / expansion)
+- Crisis management actions (war bonds, capital controls, debt reprofiling)
+- Reform actions (tax collection, state capacity drive, anti-corruption)
 
 ## 5) Included crisis entry events (phase seeds)
 
@@ -62,6 +66,7 @@ Optional scaffolded variables already included in scripts for Phase 2 extension:
 - Inflation spiral warning (`cbm_infl_spiral.1`)
 - FX crisis warning (`cbm_fx_crisis.1`)
 - Bank panic warning (`cbm_bank_panic.1`)
+- Follow-up steps for debt and FX chains (`cbm_debt_crisis.2/.3`, `cbm_fx_crisis.2/.3`)
 
 ## 6) Balance notes
 

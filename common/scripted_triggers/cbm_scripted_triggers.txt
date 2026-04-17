@@ -19,3 +19,11 @@ cbm_has_policy_space_trigger = {
 cbm_is_high_risk_trigger = {
     check_variable = { cbm_crisis_risk > 80 }
 }
+
+cbm_is_low_confidence_trigger = {
+    check_variable = { cbm_financial_confidence < 35 }
+}
+
+cbm_is_banking_fragile_trigger = {
+    check_variable = { cbm_banking_health < 40 }
+}

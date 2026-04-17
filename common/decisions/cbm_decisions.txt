@@ -130,4 +130,93 @@ decisions = {
             }
         }
     }
+
+    cbm_crisis_management = {
+        icon = generic_consumer_goods
+
+        cbm_activate_war_bonds = {
+            icon = generic_war_propaganda
+            cost = 50
+            days_remove = 120
+            visible = { has_war = yes }
+            available = { NOT = { has_idea = cbm_war_bonds_campaign } }
+            complete_effect = {
+                add_ideas = cbm_war_bonds_campaign
+                add_to_variable = { cbm_financial_confidence = 2 }
+                add_to_variable = { cbm_public_debt = -2 }
+            }
+        }
+
+        cbm_capital_controls_emergency = {
+            icon = generic_decision
+            cost = 60
+            days_remove = 90
+            visible = { always = yes }
+            available = {
+                check_variable = { cbm_fx_pressure > 60 }
+                check_variable = { cbm_crisis_risk > 65 }
+            }
+            complete_effect = {
+                add_to_variable = { cbm_fx_pressure = -10 }
+                add_to_variable = { cbm_financial_confidence = -2 }
+                add_to_variable = { cbm_investment_index = -3 }
+            }
+        }
+
+        cbm_debt_reprofiling = {
+            icon = generic_decision
+            cost = 75
+            days_remove = 120
+            visible = { always = yes }
+            available = { check_variable = { cbm_debt_to_gdp > 110 } }
+            complete_effect = {
+                add_to_variable = { cbm_public_debt = -8 }
+                add_to_variable = { cbm_financial_confidence = -2 }
+                add_to_variable = { cbm_inflation = 1.0 }
+                add_to_variable = { cbm_crisis_risk = -8 }
+            }
+        }
+    }
+
+    cbm_reform_packages = {
+        icon = generic_production
+
+        cbm_tax_collection_reform = {
+            icon = generic_decision
+            cost = 60
+            days_remove = 120
+            visible = { always = yes }
+            available = { check_variable = { cbm_tax_efficiency < 1.15 } }
+            complete_effect = {
+                add_to_variable = { cbm_tax_efficiency = 0.05 }
+                add_to_variable = { cbm_shadow_economy = -2 }
+                add_to_variable = { cbm_financial_confidence = 1 }
+            }
+        }
+
+        cbm_state_capacity_drive = {
+            icon = generic_decision
+            cost = 70
+            days_remove = 120
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_state_capacity = 3 }
+                add_to_variable = { cbm_spending_quality = 2 }
+                add_to_variable = { cbm_public_debt = 2 }
+            }
+        }
+
+        cbm_anti_corruption_program = {
+            icon = generic_decision
+            cost = 65
+            days_remove = 120
+            visible = { always = yes }
+            available = { check_variable = { cbm_shadow_economy > 5 } }
+            complete_effect = {
+                add_to_variable = { cbm_shadow_economy = -4 }
+                add_to_variable = { cbm_spending_quality = 1.5 }
+                add_to_variable = { cbm_financial_confidence = 1 }
+            }
+        }
+    }
 }
