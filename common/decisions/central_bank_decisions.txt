@@ -1,0 +1,173 @@
+decisions = {
+    central_bank_policy_category = {
+        icon = generic_economic
+        visible = { central_bank_is_initialized = yes }
+
+        central_bank_increase_rate_0_5 = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 30
+            available = { check_variable = { central_bank_interest_rate < 20 } }
+            complete_effect = { central_bank_increase_rate_0_5 = yes }
+            ai_will_do = {
+                base = 1
+                modifier = { factor = 2.5 needs_emergency_rate_hike = yes }
+                modifier = { factor = 0.4 needs_emergency_rate_cut = yes }
+            }
+        }
+
+        central_bank_increase_rate_1 = {
+            icon = generic_decision
+            cost = 40
+            days_remove = 45
+            available = { needs_emergency_rate_hike = yes }
+            complete_effect = { central_bank_increase_rate_1 = yes }
+            ai_will_do = {
+                base = 0.7
+                modifier = { factor = 2 central_bank_inflation_critical = yes }
+                modifier = { factor = 0.5 central_bank_recession = yes }
+            }
+        }
+
+        central_bank_decrease_rate_0_5 = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 30
+            available = { check_variable = { central_bank_interest_rate > 0 } }
+            complete_effect = { central_bank_decrease_rate_0_5 = yes }
+            ai_will_do = {
+                base = 1
+                modifier = { factor = 2.5 needs_emergency_rate_cut = yes }
+                modifier = { factor = 0.4 needs_emergency_rate_hike = yes }
+            }
+        }
+
+        central_bank_decrease_rate_1 = {
+            icon = generic_decision
+            cost = 40
+            days_remove = 45
+            available = { needs_emergency_rate_cut = yes }
+            complete_effect = { central_bank_decrease_rate_1 = yes }
+            ai_will_do = {
+                base = 0.8
+                modifier = { factor = 2 central_bank_recession = yes }
+                modifier = { factor = 0.5 central_bank_inflation_critical = yes }
+            }
+        }
+
+        central_bank_start_qe = {
+            icon = generic_decision
+            cost = 50
+            days_remove = 60
+            available = { central_bank_recession = yes }
+            complete_effect = { central_bank_start_qe = yes }
+            ai_will_do = {
+                base = 0.8
+                modifier = { factor = 1.8 central_bank_recession = yes }
+                modifier = { factor = 0.5 central_bank_inflation_critical = yes }
+            }
+        }
+
+        central_bank_stop_qe = {
+            icon = generic_decision
+            cost = 35
+            days_remove = 45
+            available = { check_variable = { central_bank_money_supply > 80 } }
+            complete_effect = { central_bank_stop_qe = yes }
+            ai_will_do = {
+                base = 1
+                modifier = { factor = 2 central_bank_inflation_high = yes }
+            }
+        }
+
+        central_bank_start_qt = {
+            icon = generic_decision
+            cost = 45
+            days_remove = 60
+            available = { central_bank_inflation_high = yes }
+            complete_effect = { central_bank_start_qt = yes }
+            ai_will_do = {
+                base = 0.9
+                modifier = { factor = 2 central_bank_inflation_critical = yes }
+            }
+        }
+
+        central_bank_stop_qt = {
+            icon = generic_decision
+            cost = 30
+            days_remove = 45
+            available = { central_bank_recession = yes }
+            complete_effect = { central_bank_stop_qt = yes }
+            ai_will_do = {
+                base = 0.7
+                modifier = { factor = 2 needs_emergency_rate_cut = yes }
+            }
+        }
+    }
+
+    central_bank_fiscal_category = {
+        icon = generic_production
+        visible = { central_bank_is_initialized = yes }
+
+        central_bank_set_taxes_low = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 60
+            available = { check_variable = { central_bank_debt_to_gdp < 130 } }
+            complete_effect = { central_bank_set_taxes_low = yes }
+        }
+
+        central_bank_set_taxes_normal = {
+            icon = generic_decision
+            cost = 10
+            days_remove = 30
+            available = { always = yes }
+            complete_effect = { central_bank_set_taxes_normal = yes }
+        }
+
+        central_bank_set_taxes_high = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 60
+            available = { check_variable = { central_bank_debt_to_gdp > 80 } }
+            complete_effect = { central_bank_set_taxes_high = yes }
+        }
+
+        central_bank_set_spending_low = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 60
+            available = { check_variable = { central_bank_debt_to_gdp > 85 } }
+            complete_effect = { central_bank_set_spending_low = yes }
+        }
+
+        central_bank_set_spending_normal = {
+            icon = generic_decision
+            cost = 10
+            days_remove = 30
+            available = { always = yes }
+            complete_effect = { central_bank_set_spending_normal = yes }
+        }
+
+        central_bank_set_spending_high = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 60
+            available = { central_bank_recession = yes }
+            complete_effect = { central_bank_set_spending_high = yes }
+        }
+    }
+
+    central_bank_dashboard_category = {
+        icon = generic_economic
+        visible = { central_bank_is_initialized = yes }
+
+        economic_dashboard = {
+            icon = generic_decision
+            cost = 10
+            days_remove = 14
+            available = { always = yes }
+            complete_effect = { country_event = { id = central_bank.10 } }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+# Documentation-oriented variable defaults/ranges for central_bank_* system.
+# Runtime initialization happens in central_bank_initialize scripted effect.
+
+scripted_variables = {
+    central_bank_gdp = 100
+    central_bank_gdp_growth = 0
+    central_bank_inflation = 4
+    central_bank_unemployment = 8
+    central_bank_debt = 65
+    central_bank_debt_to_gdp = 65
+    central_bank_credibility = 55
+    central_bank_currency_strength = 55
+    central_bank_money_supply = 100
+    central_bank_interest_rate = 4
+    central_bank_inflation_expectations = 6
+    central_bank_reserves = 45
+}

@@ -47,3 +47,9 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 ```bash
 ./tools/validate_cbm.sh
 ```
+
+## Central Bank (standardized namespace) status
+
+- `central_bank_*` dosyaları eklendi ve kategori/effect/event/trigger/idea akışı tek namespace altında toplandı.
+- Bu sürümde **custom GUI (.gui)** yok; sistem `economic_dashboard` decision + event paneliyle bilgi gösterir.
+- `central_bank_on_actions.txt` sadece on_action tanımları içerir; iş mantığı `central_bank_effects.txt` içindedir.

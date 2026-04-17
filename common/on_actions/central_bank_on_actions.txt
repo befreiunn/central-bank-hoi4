@@ -1,0 +1,26 @@
+on_actions = {
+    on_game_start = {
+        effect = {
+            every_country = {
+                central_bank_initialize = yes
+            }
+        }
+    }
+
+    on_startup = {
+        effect = {
+            every_country = {
+                central_bank_initialize = yes
+            }
+        }
+    }
+
+    on_monthly_pulse = {
+        effect = {
+            every_country = {
+                limit = { central_bank_is_initialized = yes }
+                central_bank_update_monthly = yes
+            }
+        }
+    }
+}

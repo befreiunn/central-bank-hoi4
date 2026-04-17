@@ -12,6 +12,14 @@ required_files=(
   "common/ideas/cbm_ideas.txt"
   "events/cbm_events.txt"
   "localisation/english/cbm_l_english.yml"
+  "common/on_actions/central_bank_on_actions.txt"
+  "common/scripted_effects/central_bank_effects.txt"
+  "common/scripted_triggers/central_bank_triggers.txt"
+  "common/decisions/central_bank_decisions.txt"
+  "common/ideas/central_bank_ideas.txt"
+  "events/central_bank_events.txt"
+  "localisation/english/central_bank_l_english.yml"
+  "common/opinion_modifiers/central_bank_opinion_modifiers.txt"
 )
 
 for file in "${required_files[@]}"; do
@@ -31,6 +39,13 @@ rg -q "g_cbm_rank_usa" common/scripted_effects/cbm_scripted_effects.txt
 rg -q "g_cbm_rank_10_score" common/scripted_effects/cbm_scripted_effects.txt
 rg -q "cbm_global_gdp_rank" common/scripted_effects/cbm_scripted_effects.txt
 rg -q "cbm_dbg_infl_net" common/scripted_effects/cbm_scripted_effects.txt
+rg -q "central_bank_update_monthly" common/scripted_effects/central_bank_effects.txt
+rg -q "central_bank_check_events" common/scripted_effects/central_bank_effects.txt
+rg -q "needs_emergency_rate_cut" common/scripted_triggers/central_bank_triggers.txt
+rg -q "needs_emergency_rate_hike" common/scripted_triggers/central_bank_triggers.txt
+rg -q "economic_dashboard" common/decisions/central_bank_decisions.txt
+rg -q "central_bank_policy_category" common/decisions/central_bank_decisions.txt
+rg -q "^l_english:" localisation/english/central_bank_l_english.yml
 
 # ensure all event IDs used in file have loc title keys
 while read -r event_id; do
@@ -40,5 +55,13 @@ while read -r event_id; do
     exit 1
   fi
 done < <(rg -o 'id = ([a-zA-Z0-9_\.]+)' -r '$1' events/cbm_events.txt | sort -u)
+
+while read -r event_id; do
+  key="${event_id}.t"
+  if ! rg -q "^[[:space:]]*${key}:0" localisation/english/central_bank_l_english.yml; then
+    echo "Missing central bank localisation key: ${key}"
+    exit 1
+  fi
+done < <(rg -o 'id = ([a-zA-Z0-9_\.]+)' -r '$1' events/central_bank_events.txt | sort -u)
 
 echo "CBM validation passed."

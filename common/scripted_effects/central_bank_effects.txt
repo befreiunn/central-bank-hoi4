@@ -1,0 +1,208 @@
+# Initialization
+central_bank_initialize = {
+    if = {
+        limit = { has_country_flag = central_bank_initialized }
+        hidden_effect = { }
+    }
+    else = {
+        set_country_flag = central_bank_initialized
+
+        set_variable = { central_bank_gdp = 100 }
+        set_variable = { central_bank_gdp_growth = 0 }
+        set_variable = { central_bank_inflation = 4 }
+        set_variable = { central_bank_unemployment = 8 }
+        set_variable = { central_bank_debt = 65 }
+        set_variable = { central_bank_debt_to_gdp = 65 }
+        set_variable = { central_bank_credibility = 55 }
+        set_variable = { central_bank_currency_strength = 55 }
+        set_variable = { central_bank_money_supply = 100 }
+        set_variable = { central_bank_interest_rate = 4 }
+        set_variable = { central_bank_inflation_expectations = 6 }
+        set_variable = { central_bank_reserves = 45 }
+
+        set_variable = { central_bank_previous_inflation = 4 }
+        set_variable = { central_bank_previous_growth = 0 }
+    }
+}
+
+# Decision effects required by decisions
+central_bank_increase_rate_0_5 = {
+    add_to_variable = { central_bank_interest_rate = 0.5 }
+    add_to_variable = { central_bank_credibility = 0.5 }
+}
+
+central_bank_increase_rate_1 = {
+    add_to_variable = { central_bank_interest_rate = 1 }
+    add_to_variable = { central_bank_credibility = 0.8 }
+    add_to_variable = { central_bank_gdp_growth = -4 }
+}
+
+central_bank_decrease_rate_0_5 = {
+    add_to_variable = { central_bank_interest_rate = -0.5 }
+    add_to_variable = { central_bank_gdp_growth = 2 }
+}
+
+central_bank_decrease_rate_1 = {
+    add_to_variable = { central_bank_interest_rate = -1 }
+    add_to_variable = { central_bank_gdp_growth = 4 }
+    add_to_variable = { central_bank_currency_strength = -2 }
+}
+
+central_bank_start_qe = {
+    add_to_variable = { central_bank_money_supply = 6 }
+    add_to_variable = { central_bank_inflation_expectations = 0.7 }
+}
+
+central_bank_stop_qe = {
+    add_to_variable = { central_bank_money_supply = -4 }
+    add_to_variable = { central_bank_inflation_expectations = -0.4 }
+}
+
+central_bank_start_qt = {
+    add_to_variable = { central_bank_money_supply = -5 }
+    add_to_variable = { central_bank_currency_strength = 1.5 }
+}
+
+central_bank_stop_qt = {
+    add_to_variable = { central_bank_money_supply = 3 }
+    add_to_variable = { central_bank_currency_strength = -1 }
+}
+
+central_bank_set_taxes_low = { add_to_variable = { central_bank_debt = 1.5 } }
+central_bank_set_taxes_normal = { hidden_effect = { } }
+central_bank_set_taxes_high = {
+    add_to_variable = { central_bank_debt = -1.8 }
+    add_to_variable = { central_bank_gdp_growth = -2 }
+}
+
+central_bank_set_spending_low = {
+    add_to_variable = { central_bank_debt = -2 }
+    add_to_variable = { central_bank_unemployment = 0.4 }
+}
+central_bank_set_spending_normal = { hidden_effect = { } }
+central_bank_set_spending_high = {
+    add_to_variable = { central_bank_debt = 2.5 }
+    add_to_variable = { central_bank_gdp_growth = 2 }
+}
+
+central_bank_apply_modifiers = {
+    if = {
+        limit = { check_variable = { central_bank_currency_strength > 70 } }
+        every_other_country = {
+            add_opinion_modifier = { target = ROOT modifier = strong_currency_bonus }
+        }
+    }
+    if = {
+        limit = { check_variable = { central_bank_currency_strength < 35 } }
+        every_other_country = {
+            add_opinion_modifier = { target = ROOT modifier = weak_currency_penalty }
+        }
+    }
+}
+
+central_bank_update_monthly = {
+    # Sequencing for consistency
+    set_variable = { central_bank_previous_inflation = central_bank_inflation }
+    set_variable = { central_bank_previous_growth = central_bank_gdp_growth }
+
+    # 1) Policy transmission
+    set_temp_variable = { central_bank_tmp_policy_drag = central_bank_interest_rate }
+    multiply_temp_variable = { central_bank_tmp_policy_drag = 0.20 }
+
+    set_temp_variable = { central_bank_tmp_money_push = central_bank_money_supply }
+    multiply_temp_variable = { central_bank_tmp_money_push = 0.03 }
+
+    # 2) Inflation expectations update
+    set_temp_variable = { central_bank_tmp_expect = central_bank_previous_inflation }
+    multiply_temp_variable = { central_bank_tmp_expect = 0.15 }
+    add_to_variable = { central_bank_inflation_expectations = central_bank_tmp_expect }
+    subtract_from_variable = { central_bank_inflation_expectations = central_bank_tmp_policy_drag }
+
+    # 3) Inflation
+    add_to_variable = { central_bank_inflation = central_bank_tmp_money_push }
+    add_to_variable = { central_bank_inflation = central_bank_inflation_expectations }
+    subtract_from_variable = { central_bank_inflation = central_bank_tmp_policy_drag }
+
+    # 4) Growth
+    set_temp_variable = { central_bank_tmp_growth = 5 }
+    add_to_temp_variable = { central_bank_tmp_growth = central_bank_currency_strength }
+    multiply_temp_variable = { central_bank_tmp_growth = 0.05 }
+    subtract_from_temp_variable = { central_bank_tmp_growth = central_bank_inflation }
+    add_to_variable = { central_bank_gdp_growth = central_bank_tmp_growth }
+    add_to_variable = { central_bank_gdp = central_bank_tmp_growth }
+
+    # 5) Debt and labor
+    add_to_variable = { central_bank_debt = 0.8 }
+    if = {
+        limit = { central_bank_recession = yes }
+        add_to_variable = { central_bank_unemployment = 0.6 }
+    }
+    else = {
+        add_to_variable = { central_bank_unemployment = -0.2 }
+    }
+
+    if = {
+        limit = { check_variable = { central_bank_gdp > 0 } }
+        set_temp_variable = { central_bank_tmp_ratio = central_bank_debt }
+        divide_temp_variable = { central_bank_tmp_ratio = central_bank_gdp }
+        multiply_temp_variable = { central_bank_tmp_ratio = 100 }
+        set_variable = { central_bank_debt_to_gdp = central_bank_tmp_ratio }
+    }
+
+    # 6) Credibility/currency and event checks
+    if = {
+        limit = { central_bank_inflation_critical = yes }
+        add_to_variable = { central_bank_credibility = -1 }
+        add_to_variable = { central_bank_currency_strength = -1.5 }
+    }
+    if = {
+        limit = { central_bank_inflation < 6 }
+        add_to_variable = { central_bank_credibility = 0.4 }
+    }
+
+    central_bank_check_events = yes
+    central_bank_apply_modifiers = yes
+    central_bank_normalize_values = yes
+}
+
+central_bank_check_events = {
+    if = {
+        limit = {
+            central_bank_debt_critical = yes
+            NOT = { has_country_flag = central_bank_debt_crisis_cd }
+        }
+        country_event = { id = central_bank.100 days = 1 }
+        set_timed_country_flag = { flag = central_bank_debt_crisis_cd days = 120 }
+    }
+    if = {
+        limit = {
+            central_bank_inflation_critical = yes
+            NOT = { has_country_flag = central_bank_infl_crisis_cd }
+        }
+        country_event = { id = central_bank.200 days = 1 }
+        set_timed_country_flag = { flag = central_bank_infl_crisis_cd days = 120 }
+    }
+    if = {
+        limit = {
+            central_bank_fx_crisis_risk = yes
+            NOT = { has_country_flag = central_bank_fx_crisis_cd }
+        }
+        country_event = { id = central_bank.300 days = 1 }
+        set_timed_country_flag = { flag = central_bank_fx_crisis_cd days = 120 }
+    }
+}
+
+central_bank_normalize_values = {
+    clamp_variable = { var = central_bank_gdp min = 20 max = 3000 }
+    clamp_variable = { var = central_bank_gdp_growth min = -200 max = 200 }
+    clamp_variable = { var = central_bank_unemployment min = 0 max = 35 }
+    clamp_variable = { var = central_bank_inflation min = 0 max = 60 }
+    clamp_variable = { var = central_bank_inflation_expectations min = 0 max = 30 }
+    clamp_variable = { var = central_bank_credibility min = 0 max = 100 }
+    clamp_variable = { var = central_bank_currency_strength min = 0 max = 100 }
+    clamp_variable = { var = central_bank_interest_rate min = 0 max = 20 }
+    clamp_variable = { var = central_bank_money_supply min = 20 max = 250 }
+    clamp_variable = { var = central_bank_debt min = 0 max = 5000 }
+    clamp_variable = { var = central_bank_debt_to_gdp min = 0 max = 300 }
+    clamp_variable = { var = central_bank_reserves min = 0 max = 100 }
+}
