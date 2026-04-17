@@ -19,7 +19,6 @@ required_files=(
   "common/ideas/central_bank_ideas.txt"
   "events/central_bank_events.txt"
   "localisation/english/central_bank_l_english.yml"
-  "common/opinion_modifiers/central_bank_opinion_modifiers.txt"
 )
 
 for file in "${required_files[@]}"; do

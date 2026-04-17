@@ -16,8 +16,6 @@
   - triggered-only crisis chains + one MTTH informational event with cooldown.
 - `localisation/english/central_bank_l_english.yml`
   - all decision/event/idea/category keys.
-- `common/opinion_modifiers/central_bank_opinion_modifiers.txt`
-  - opinion modifiers used by scripted effects.
 - `common/scripted_variables/central_bank_variables.txt`
   - documented variable defaults.
 

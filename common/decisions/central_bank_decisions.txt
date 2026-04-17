@@ -4,6 +4,7 @@ decisions = {
         visible = { central_bank_is_initialized = yes }
 
         central_bank_increase_rate_0_5 = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 25
             days_remove = 30
@@ -17,6 +18,7 @@ decisions = {
         }
 
         central_bank_increase_rate_1 = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 40
             days_remove = 45
@@ -30,6 +32,7 @@ decisions = {
         }
 
         central_bank_decrease_rate_0_5 = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 25
             days_remove = 30
@@ -43,6 +46,7 @@ decisions = {
         }
 
         central_bank_decrease_rate_1 = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 40
             days_remove = 45
@@ -56,6 +60,7 @@ decisions = {
         }
 
         central_bank_start_qe = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 50
             days_remove = 60
@@ -69,6 +74,7 @@ decisions = {
         }
 
         central_bank_stop_qe = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 35
             days_remove = 45
@@ -81,6 +87,7 @@ decisions = {
         }
 
         central_bank_start_qt = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 45
             days_remove = 60
@@ -93,6 +100,7 @@ decisions = {
         }
 
         central_bank_stop_qt = {
+            category = central_bank_policy_category
             icon = generic_decision
             cost = 30
             days_remove = 45
@@ -110,6 +118,7 @@ decisions = {
         visible = { central_bank_is_initialized = yes }
 
         central_bank_set_taxes_low = {
+            category = central_bank_fiscal_category
             icon = generic_decision
             cost = 25
             days_remove = 60
@@ -118,6 +127,7 @@ decisions = {
         }
 
         central_bank_set_taxes_normal = {
+            category = central_bank_fiscal_category
             icon = generic_decision
             cost = 10
             days_remove = 30
@@ -126,6 +136,7 @@ decisions = {
         }
 
         central_bank_set_taxes_high = {
+            category = central_bank_fiscal_category
             icon = generic_decision
             cost = 25
             days_remove = 60
@@ -134,6 +145,7 @@ decisions = {
         }
 
         central_bank_set_spending_low = {
+            category = central_bank_fiscal_category
             icon = generic_decision
             cost = 25
             days_remove = 60
@@ -142,6 +154,7 @@ decisions = {
         }
 
         central_bank_set_spending_normal = {
+            category = central_bank_fiscal_category
             icon = generic_decision
             cost = 10
             days_remove = 30
@@ -150,6 +163,7 @@ decisions = {
         }
 
         central_bank_set_spending_high = {
+            category = central_bank_fiscal_category
             icon = generic_decision
             cost = 25
             days_remove = 60
@@ -163,6 +177,7 @@ decisions = {
         visible = { central_bank_is_initialized = yes }
 
         economic_dashboard = {
+            category = central_bank_dashboard_category
             icon = generic_decision
             cost = 10
             days_remove = 14

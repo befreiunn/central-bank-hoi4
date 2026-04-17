@@ -88,15 +88,11 @@ central_bank_set_spending_high = {
 central_bank_apply_modifiers = {
     if = {
         limit = { check_variable = { central_bank_currency_strength > 70 } }
-        every_other_country = {
-            add_opinion_modifier = { target = ROOT modifier = strong_currency_bonus }
-        }
+        add_to_variable = { central_bank_credibility = 0.3 }
     }
     if = {
         limit = { check_variable = { central_bank_currency_strength < 35 } }
-        every_other_country = {
-            add_opinion_modifier = { target = ROOT modifier = weak_currency_penalty }
-        }
+        add_to_variable = { central_bank_credibility = -0.4 }
     }
 }
 
