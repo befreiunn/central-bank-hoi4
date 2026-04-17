@@ -1,0 +1,133 @@
+decisions = {
+    cbm_central_bank_policies = {
+        icon = generic_economic
+
+        cbm_raise_policy_rate_small = {
+            icon = generic_decision
+            cost = 25
+            days_remove = 30
+            available = { check_variable = { cbm_policy_rate < 15 } }
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_policy_rate = 0.5 }
+                add_to_variable = { cbm_financial_confidence = 1 }
+                add_to_variable = { cbm_investment_index = -1 }
+            }
+        }
+
+        cbm_raise_policy_rate_large = {
+            icon = generic_decision
+            cost = 40
+            days_remove = 45
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_policy_rate = 1.5 }
+                add_to_variable = { cbm_financial_confidence = 2 }
+                add_to_variable = { cbm_investment_index = -3 }
+                add_to_variable = { cbm_unemployment = 0.3 }
+            }
+        }
+
+        cbm_cut_policy_rate = {
+            icon = generic_decision
+            cost = 30
+            days_remove = 45
+            visible = { always = yes }
+            available = { check_variable = { cbm_policy_rate > 0 } }
+            complete_effect = {
+                add_to_variable = { cbm_policy_rate = -1.0 }
+                add_to_variable = { cbm_investment_index = 2 }
+                add_to_variable = { cbm_fx_pressure = 2 }
+            }
+        }
+
+        cbm_open_market_tightening = {
+            icon = generic_decision
+            cost = 35
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_liquidity_stance = -1 }
+                add_to_variable = { cbm_financial_confidence = 1 }
+                add_to_variable = { cbm_inflation = -0.4 }
+            }
+        }
+
+        cbm_open_market_easing = {
+            icon = generic_decision
+            cost = 35
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_liquidity_stance = 1 }
+                add_to_variable = { cbm_investment_index = 1 }
+                add_to_variable = { cbm_fx_pressure = 1 }
+            }
+        }
+
+        cbm_fx_intervention_defend_currency = {
+            icon = generic_decision
+            cost = 45
+            days_remove = 30
+            visible = { always = yes }
+            available = { check_variable = { cbm_fx_reserves > 10 } }
+            complete_effect = {
+                add_to_variable = { cbm_fx_reserves = -8 }
+                add_to_variable = { cbm_fx_pressure = -6 }
+                add_to_variable = { cbm_financial_confidence = 2 }
+            }
+        }
+
+        cbm_emergency_liquidity_window = {
+            icon = generic_decision
+            cost = 50
+            days_remove = 90
+            visible = { always = yes }
+            complete_effect = {
+                add_to_variable = { cbm_banking_health = 8 }
+                add_to_variable = { cbm_financial_confidence = 1 }
+                add_to_variable = { cbm_inflation = 1.2 }
+            }
+        }
+    }
+
+    cbm_fiscal_policies = {
+        icon = generic_production
+
+        cbm_fiscal_austerity = {
+            icon = generic_decision
+            cost = 35
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                set_variable = { cbm_fiscal_stance = -1 }
+                add_to_variable = { cbm_public_debt = -2 }
+                add_to_variable = { cbm_financial_confidence = 1 }
+                add_to_variable = { cbm_unemployment = 0.2 }
+            }
+        }
+
+        cbm_fiscal_neutral = {
+            icon = generic_decision
+            cost = 20
+            days_remove = 30
+            visible = { always = yes }
+            complete_effect = {
+                set_variable = { cbm_fiscal_stance = 0 }
+            }
+        }
+
+        cbm_fiscal_expansion = {
+            icon = generic_decision
+            cost = 40
+            days_remove = 60
+            visible = { always = yes }
+            complete_effect = {
+                set_variable = { cbm_fiscal_stance = 1 }
+                add_to_variable = { cbm_gdp = 1.5 }
+                add_to_variable = { cbm_public_debt = 3 }
+                add_to_variable = { cbm_financial_confidence = -1 }
+            }
+        }
+    }
+}

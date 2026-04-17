@@ -1,0 +1,48 @@
+on_actions = {
+    on_startup = {
+        effect = {
+            every_country = {
+                limit = { NOT = { has_country_flag = cbm_initialized } }
+                set_country_flag = cbm_initialized
+
+                set_variable = { cbm_gdp = 100 }
+                set_variable = { cbm_gdp_growth = 0 }
+                set_variable = { cbm_inflation = 4 }
+                set_variable = { cbm_unemployment = 9 }
+                set_variable = { cbm_public_debt = 55 }
+                set_variable = { cbm_debt_to_gdp = 55 }
+                set_variable = { cbm_financial_confidence = 55 }
+                set_variable = { cbm_crisis_risk = 20 }
+
+                set_variable = { cbm_policy_rate = 4 }
+                set_variable = { cbm_liquidity_stance = 0 }
+                set_variable = { cbm_fiscal_stance = 0 }
+
+                set_variable = { cbm_fx_pressure = 20 }
+                set_variable = { cbm_fx_reserves = 50 }
+                set_variable = { cbm_banking_health = 65 }
+                set_variable = { cbm_investment_index = 50 }
+                set_variable = { cbm_consumption_index = 50 }
+                set_variable = { cbm_industry_productivity = 50 }
+                set_variable = { cbm_war_econ_stress = 0 }
+                set_variable = { cbm_supply_shock_risk = 10 }
+            }
+        }
+    }
+
+    on_monthly_pulse = {
+        effect = {
+            every_country = {
+                country_event = { id = cbm.1000 }
+            }
+        }
+    }
+
+    on_90_days_pulse = {
+        effect = {
+            every_country = {
+                country_event = { id = cbm.1090 }
+            }
+        }
+    }
+}

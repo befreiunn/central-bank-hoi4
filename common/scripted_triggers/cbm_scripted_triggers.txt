@@ -1,0 +1,21 @@
+cbm_is_inflation_high_trigger = {
+    check_variable = { cbm_inflation > 18 }
+}
+
+cbm_is_debt_critical_trigger = {
+    check_variable = { cbm_debt_to_gdp > 120 }
+}
+
+cbm_is_fx_crisis_trigger = {
+    check_variable = { cbm_fx_pressure > 75 }
+    check_variable = { cbm_fx_reserves < 25 }
+}
+
+cbm_has_policy_space_trigger = {
+    check_variable = { cbm_policy_rate > 1 }
+    check_variable = { cbm_financial_confidence > 30 }
+}
+
+cbm_is_high_risk_trigger = {
+    check_variable = { cbm_crisis_risk > 80 }
+}
