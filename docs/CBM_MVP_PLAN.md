@@ -16,6 +16,8 @@ This document converts the high-level economy design into a practical Hearts of 
   - Risk-state and policy-framework spirits.
 - `events/cbm_events.txt`
   - Hidden monthly runner + visible crisis chain entry events.
+- `tools/validate_cbm.sh`
+  - Lightweight consistency checks for required files, runner wiring and localisation keys.
 - `localisation/english/cbm_l_english.yml`
   - UI and event localization keys.
 
@@ -67,12 +69,14 @@ Optional scaffolded variables already included in scripts for Phase 2 extension:
 - FX crisis warning (`cbm_fx_crisis.1`)
 - Bank panic warning (`cbm_bank_panic.1`)
 - Follow-up steps for debt and FX chains (`cbm_debt_crisis.2/.3`, `cbm_fx_crisis.2/.3`)
+- Follow-up steps for inflation and banking chains (`cbm_infl_spiral.2/.3`, `cbm_bank_panic.2/.3`)
 
 ## 6) Balance notes
 
 - Uses deterministic threshold + accumulation logic to avoid abrupt RNG punishments.
 - Crisis events include 90-day cooldown flags to avoid repetitive spam firing.
 - Early game tolerance can be implemented by adding date/country flag checks in `cbm_effect_refresh_risk_bucket`.
+- Includes early-game tolerance window (before July 1, 1937) and ideology-aware AI reactions.
 - Majors can run full model later; minors can call a simplified update effect.
 
 ## 7) Next step (recommended)

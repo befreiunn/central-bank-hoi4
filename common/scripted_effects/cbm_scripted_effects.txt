@@ -7,6 +7,7 @@ cbm_effect_monthly_macro_update = {
     cbm_effect_refresh_risk_bucket = yes
     cbm_effect_apply_risk_spirits = yes
     cbm_effect_run_ai_policy_response = yes
+    cbm_effect_sanitize_variables = yes
 }
 
 cbm_effect_update_gdp = {
@@ -165,6 +166,13 @@ cbm_effect_refresh_risk_bucket = {
     set_variable = { cbm_crisis_risk = cbm_tmp_risk }
     clamp_variable = { var = cbm_crisis_risk min = 0 max = 100 }
 
+    # Early-game tolerance window for onboarding and balance stability.
+    if = {
+        limit = { date < 1937.7.1 }
+        add_to_variable = { cbm_crisis_risk = -8 }
+        clamp_variable = { var = cbm_crisis_risk min = 0 max = 100 }
+    }
+
     if = {
         limit = {
             check_variable = { cbm_debt_to_gdp > 120 }
@@ -294,9 +302,31 @@ cbm_effect_run_ai_policy_response = {
             is_ai = yes
             check_variable = { cbm_crisis_risk > 80 }
         }
-        add_to_variable = { cbm_policy_rate = 0.5 }
-        add_to_variable = { cbm_liquidity_stance = -1 }
-        add_to_variable = { cbm_fiscal_stance = -1 }
+        if = {
+            limit = { has_government = democratic }
+            add_to_variable = { cbm_policy_rate = 0.8 }
+            add_to_variable = { cbm_liquidity_stance = -1 }
+            add_to_variable = { cbm_fiscal_stance = -1 }
+        }
+        else_if = {
+            limit = { has_government = fascism }
+            add_to_variable = { cbm_policy_rate = 0.4 }
+            add_to_variable = { cbm_liquidity_stance = 0 }
+            add_to_variable = { cbm_fiscal_stance = 1 }
+            add_to_variable = { cbm_public_debt = 1.2 }
+        }
+        else_if = {
+            limit = { has_government = communism }
+            add_to_variable = { cbm_policy_rate = 0.3 }
+            add_to_variable = { cbm_liquidity_stance = 1 }
+            add_to_variable = { cbm_fiscal_stance = 0 }
+            add_to_variable = { cbm_fx_pressure = -1.5 }
+        }
+        else = {
+            add_to_variable = { cbm_policy_rate = 0.6 }
+            add_to_variable = { cbm_liquidity_stance = -1 }
+            add_to_variable = { cbm_fiscal_stance = -1 }
+        }
     }
 
     if = {
@@ -317,4 +347,27 @@ cbm_effect_run_ai_policy_response = {
 cbm_effect_quarterly_structural_update = {
     # Lightweight placeholder for global rank cache.
     set_global_flag = g_cbm_rank_refresh_ran
+}
+
+cbm_effect_sanitize_variables = {
+    clamp_variable = { var = cbm_gdp min = 20 max = 5000 }
+    clamp_variable = { var = cbm_gdp_growth min = -2000 max = 2000 }
+    clamp_variable = { var = cbm_inflation min = 0 max = 60 }
+    clamp_variable = { var = cbm_unemployment min = 0 max = 30 }
+    clamp_variable = { var = cbm_public_debt min = 0 max = 8000 }
+    clamp_variable = { var = cbm_debt_to_gdp min = 0 max = 300 }
+    clamp_variable = { var = cbm_interest_burden min = 0 max = 25 }
+    clamp_variable = { var = cbm_financial_confidence min = 0 max = 100 }
+    clamp_variable = { var = cbm_fx_pressure min = 0 max = 100 }
+    clamp_variable = { var = cbm_fx_reserves min = 0 max = 100 }
+    clamp_variable = { var = cbm_crisis_risk min = 0 max = 100 }
+    clamp_variable = { var = cbm_war_econ_stress min = 0 max = 100 }
+    clamp_variable = { var = cbm_supply_shock_risk min = 0 max = 100 }
+    clamp_variable = { var = cbm_policy_rate min = 0 max = 15 }
+    clamp_variable = { var = cbm_liquidity_stance min = -2 max = 2 }
+    clamp_variable = { var = cbm_fiscal_stance min = -2 max = 2 }
+    clamp_variable = { var = cbm_spending_quality min = 0 max = 100 }
+    clamp_variable = { var = cbm_state_capacity min = 0 max = 100 }
+    clamp_variable = { var = cbm_shadow_economy min = 0 max = 60 }
+    clamp_variable = { var = cbm_banking_health min = 0 max = 100 }
 }

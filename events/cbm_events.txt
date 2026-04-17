@@ -33,6 +33,30 @@ country_event = {
 }
 
 country_event = {
+    id = cbm.2000
+    title = cbm.2000.t
+    desc = cbm.2000.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm.2000.a
+    }
+}
+
+country_event = {
+    id = cbm.2001
+    title = cbm.2001.t
+    desc = cbm.2001.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm.2001.a
+    }
+}
+
+country_event = {
     id = cbm_debt_crisis.1
     title = cbm_debt_crisis.1.t
     desc = cbm_debt_crisis.1.d
@@ -68,6 +92,7 @@ country_event = {
         add_to_variable = { cbm_policy_rate = 1 }
         add_to_variable = { cbm_inflation = -1.2 }
         add_to_variable = { cbm_unemployment = 0.2 }
+        country_event = { id = cbm_infl_spiral.2 days = 30 }
     }
 
     option = {
@@ -75,6 +100,7 @@ country_event = {
         add_to_variable = { cbm_inflation = -0.5 }
         add_to_variable = { cbm_financial_confidence = -1 }
         add_stability = 0.02
+        country_event = { id = cbm_infl_spiral.3 days = 30 }
     }
 }
 
@@ -114,6 +140,7 @@ country_event = {
         add_to_variable = { cbm_banking_health = 10 }
         add_to_variable = { cbm_public_debt = 3 }
         add_to_variable = { cbm_financial_confidence = 2 }
+        country_event = { id = cbm_bank_panic.2 days = 14 }
     }
 
     option = {
@@ -121,6 +148,7 @@ country_event = {
         add_to_variable = { cbm_banking_health = 4 }
         add_to_variable = { cbm_financial_confidence = -1 }
         add_to_variable = { cbm_crisis_risk = 3 }
+        country_event = { id = cbm_bank_panic.3 days = 14 }
     }
 }
 
@@ -140,6 +168,35 @@ country_event = {
 }
 
 country_event = {
+    id = cbm_infl_spiral.2
+    title = cbm_infl_spiral.2.t
+    desc = cbm_infl_spiral.2.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_infl_spiral.2.a
+        add_to_variable = { cbm_inflation = -0.8 }
+        add_to_variable = { cbm_financial_confidence = 0.6 }
+    }
+}
+
+country_event = {
+    id = cbm_infl_spiral.3
+    title = cbm_infl_spiral.3.t
+    desc = cbm_infl_spiral.3.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_infl_spiral.3.a
+        add_to_variable = { cbm_inflation = 0.7 }
+        add_to_variable = { cbm_crisis_risk = 2 }
+        add_stability = 0.01
+    }
+}
+
+country_event = {
     id = cbm_debt_crisis.3
     title = cbm_debt_crisis.3.t
     desc = cbm_debt_crisis.3.d
@@ -151,6 +208,36 @@ country_event = {
         add_to_variable = { cbm_financial_confidence = -1 }
         add_to_variable = { cbm_crisis_risk = -2 }
         add_stability = -0.02
+    }
+}
+
+country_event = {
+    id = cbm_bank_panic.2
+    title = cbm_bank_panic.2.t
+    desc = cbm_bank_panic.2.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_bank_panic.2.a
+        add_to_variable = { cbm_banking_health = 5 }
+        add_to_variable = { cbm_financial_confidence = 1 }
+        add_to_variable = { cbm_public_debt = 1.5 }
+    }
+}
+
+country_event = {
+    id = cbm_bank_panic.3
+    title = cbm_bank_panic.3.t
+    desc = cbm_bank_panic.3.d
+    picture = GFX_report_event_default
+    is_triggered_only = yes
+
+    option = {
+        name = cbm_bank_panic.3.a
+        add_to_variable = { cbm_banking_health = -2 }
+        add_to_variable = { cbm_crisis_risk = 3 }
+        add_to_variable = { cbm_financial_confidence = -1 }
     }
 }
 

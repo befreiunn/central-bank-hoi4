@@ -18,12 +18,14 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 - Scripted trigger seti (yüksek enflasyon, kritik borç, FX krizi vb.).
 - Merkez bankası ve maliye kararları için başlangıç decision seti.
 - Kriz yönetimi ve reform paketleri için ek decision seti.
+- Ekonomi dashboard decision/event ekranı (özet + global görünüm placeholder).
 - 4 kriz zinciri giriş eventi:
   - Borç
   - Enflasyon
   - Kur
   - Bankacılık
 - İngilizce localization anahtarları.
+- `tools/validate_cbm.sh` ile temel bütünlük doğrulaması.
 - `docs/CBM_MVP_PLAN.md` içinde mimari ve sonraki faz planı.
 
 ## Dizinler
@@ -36,3 +38,9 @@ CBM_Economy_Overhaul (Central Bank & Ministry) için HOI4 mod iskeleti.
 - `events/`
 - `localisation/english/`
 - `docs/`
+
+## Hızlı doğrulama
+
+```bash
+./tools/validate_cbm.sh
+```

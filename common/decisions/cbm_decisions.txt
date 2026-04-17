@@ -219,4 +219,28 @@ decisions = {
             }
         }
     }
+
+    cbm_economy_dashboard = {
+        icon = generic_economic
+
+        cbm_open_economy_summary = {
+            icon = generic_decision
+            cost = 10
+            days_remove = 7
+            visible = { always = yes }
+            complete_effect = {
+                country_event = { id = cbm.2000 }
+            }
+        }
+
+        cbm_open_global_outlook = {
+            icon = generic_decision
+            cost = 15
+            days_remove = 30
+            visible = { always = yes }
+            complete_effect = {
+                country_event = { id = cbm.2001 }
+            }
+        }
+    }
 }
